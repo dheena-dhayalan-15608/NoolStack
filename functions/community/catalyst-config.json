@@ -1,0 +1,16 @@
+{
+  "deployment": {
+    "name": "community",
+    "stack": "node22",
+    "type": "advancedio",
+    "env_variables": {
+      "ADMIN_EMAILS": "",
+      "ANTHROPIC_API_KEY": "",
+      "MODERATION_MODEL": "claude-haiku-5-5",
+      "DS_CHANNEL_ID": ""
+    }
+  },
+  "execution": {
+    "main": "index.js"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "functions": {
+    "targets": [
+      "community"
+    ],
+    "ignore": [],
+    "source": "functions"
+  },
+  "client": {
+    "source": "client"
+  }
+}

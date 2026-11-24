@@ -1,0 +1,14 @@
+{
+  "name": "community",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "express": "4.22.2",
+    "zcatalyst-sdk-node": "3.4.0",
+    "@zcatalyst/auth-admin": "1.1.0",
+    "@zcatalyst/datastreams": "1.0.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
