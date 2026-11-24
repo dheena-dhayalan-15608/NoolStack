@@ -7,3 +7,4 @@ client/
 .build/
 web/test-results/
 web/playwright-report/
+dist/

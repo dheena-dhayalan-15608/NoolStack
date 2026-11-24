@@ -1,0 +1,13 @@
+{
+  "name": "noolstack",
+  "private": true,
+  "version": "1.0.0",
+  "description": "NoolStack: the Vue app is in web/. This file lets hosts that build from the repo root (such as Catalyst Slate) build it.",
+  "scripts": {
+    "build": "npm --prefix web ci && npm --prefix web run build -- --outDir ../dist",
+    "build:catalyst": "npm --prefix web ci && npm --prefix web run build"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

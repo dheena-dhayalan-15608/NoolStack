@@ -79,6 +79,10 @@ These steps follow the Catalyst documentation as of November 2026. They have not
 
 `catalyst serve` runs the Catalyst version locally, after a build.
 
+### Deploying with Catalyst Slate instead
+
+Slate builds from the top of the repository. The `package.json` there lets it do that with its default Vue settings: `npm install` installs nothing at the top level, and `npm run build` builds `web/` into `dist/`, which is the folder Slate publishes. On Slate the site sits on a different address from the `community` function and Catalyst sign-in, so it runs in preview mode: guest progress only, and the Debug Desk stand-in.
+
 ## Turn on accounts
 
 Sign-in and sign-up only work when the site is running on Catalyst. Everywhere else the site stays in guest mode, and the Account page shows the forms switched off. (`web/index.html` loads the Catalyst Web SDK and `/__catalyst/sdk/init.js`; when either cannot load, the site knows it is not on Catalyst.)
