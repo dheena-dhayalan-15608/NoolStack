@@ -1,0 +1,55 @@
+/* NoolStack: the "Forgot password" pages (Catalyst Embedded Authentication, password reset).
+   Catalyst's own stylesheet comes first, then NoolStack's look on top, matching embeddediframe.css. */
+@import url("https://api.catalyst.zoho.com/baas/v1/auth/static-file?file_name=embedded_password_reset.css");
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@500;700&display=swap");
+
+:root{
+  --ns-bg:#FAF8F3;--ns-surface:#FFFFFF;--ns-line:#DAD6CB;--ns-ink:#16181C;--ns-muted:#5B6270;
+  --ns-accent:#8F5A00;--ns-accent-ink:#FFFFFF;--ns-ring:rgba(143,90,0,.22);--ns-bad:#B23A28;
+  --ns-body:"Atkinson Hyperlegible",Verdana,system-ui,sans-serif;
+  --ns-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--ns-bg:#171A1F;--ns-surface:#111317;--ns-line:#2E333D;--ns-ink:#ECEEF2;--ns-muted:#8F97A6;
+    --ns-accent:#F2B13C;--ns-accent-ink:#17120A;--ns-ring:rgba(242,177,60,.28);--ns-bad:#FF7B6B;}
+}
+
+html,body{background:var(--ns-surface)!important;color:var(--ns-ink);font-family:var(--ns-body)}
+.bg_one{display:none!important}
+.blur{background:var(--ns-surface)}
+.loader{border-color:var(--ns-accent);border-bottom-color:transparent}
+
+.recovery_container{width:100%;max-width:460px;min-height:0;margin:0 auto;box-shadow:none;background:transparent;overflow:visible}
+.recovery_box{width:100%;min-height:0;padding:28px 28px 24px;background:transparent;border-right:0;float:none;display:block}
+.info_head{font:700 24px/1.25 var(--ns-display);color:var(--ns-ink);padding-top:0}
+.head_info,.support_temp_info,.text16,.menutext,.option_title_try,.error_content .error_header{color:var(--ns-ink)}
+.option_description,.pass_policy,.push_resend,.error_content .error_desc{color:var(--ns-muted)}
+.user_info{border-color:var(--ns-line)}
+
+.textbox,.otp_container,#captcha{height:48px;background:var(--ns-bg);color:var(--ns-ink);border:1px solid var(--ns-line);border-radius:10px;text-indent:14px;font-family:var(--ns-body);font-size:16px}
+.otp_container{text-indent:0}
+.customOtp{color:var(--ns-ink)}
+.textbox:focus{border:1px solid var(--ns-accent);box-shadow:0 0 0 3px var(--ns-ring)}
+.errorborder{border:1px solid var(--ns-bad)!important}
+.textbox:-webkit-autofill,.textbox:-webkit-autofill:hover,.textbox:-webkit-autofill:focus,.textbox:-webkit-autofill:active{-webkit-box-shadow:inset 0 0 0 9999px var(--ns-bg);-webkit-text-fill-color:var(--ns-ink)}
+.show_hide_password{color:var(--ns-muted)}
+.fielderror,.errorlabel{color:var(--ns-bad)}
+
+.btn{height:48px;border-radius:10px;text-transform:none;letter-spacing:0;font:700 16px var(--ns-body)}
+.blue,.green,.doneWithContent:hover{background:var(--ns-accent);color:var(--ns-accent-ink);box-shadow:none}
+.blue:hover{background:var(--ns-accent);filter:brightness(1.07)}
+.grey{background:transparent;color:var(--ns-ink);border:1px solid var(--ns-line)}
+.changeloadbtn:before{border-color:var(--ns-accent-ink);border-top-color:transparent}
+.bluetext_action,.bottom_option,.change_user,.fielderror a{color:var(--ns-accent)}
+.optionstry:hover,.backoption:hover,.toggle_active{background:var(--ns-bg)}
+.img_option,.select_icon{color:var(--ns-accent)}
+
+.Alert,.Errormsg{background:var(--ns-ink);border-radius:10px}
+.alert_message,.error_message{color:var(--ns-surface);font-family:var(--ns-body)}
+
+@media only screen and (max-width:600px){
+  .recovery_box{padding:20px 4px 24px}
+  .textbox,.otp_container{background:var(--ns-bg);border:1px solid var(--ns-line);border-radius:10px}
+  .textbox:valid{border:1px solid var(--ns-line)}
+  .textbox:focus{border-color:var(--ns-accent)}
+}

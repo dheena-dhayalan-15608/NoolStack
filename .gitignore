@@ -1,0 +1,9 @@
+node_modules/
+# build output of web/ (npm run build); this is what catalyst deploy uploads
+client/
+.DS_Store
+.catalystrc
+*.log
+.build/
+web/test-results/
+web/playwright-report/

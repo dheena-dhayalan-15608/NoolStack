@@ -1,0 +1,58 @@
+/* NoolStack: the sign-in box (Catalyst Embedded Authentication, login form).
+   Catalyst asks that its own stylesheet comes first and custom styles are added after it, so it is
+   imported here, then NoolStack's look is layered on top. Light by default; dark when the browser is dark. */
+@import url("https://api.catalyst.zoho.com/baas/v1/auth/static-file?file_name=embedded_signin.css");
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@500;700&display=swap");
+
+:root{
+  --ns-bg:#FAF8F3;--ns-surface:#FFFFFF;--ns-line:#DAD6CB;--ns-ink:#16181C;--ns-muted:#5B6270;
+  --ns-accent:#8F5A00;--ns-accent-ink:#FFFFFF;--ns-ring:rgba(143,90,0,.22);--ns-bad:#B23A28;
+  --ns-body:"Atkinson Hyperlegible",Verdana,system-ui,sans-serif;
+  --ns-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--ns-bg:#171A1F;--ns-surface:#111317;--ns-line:#2E333D;--ns-ink:#ECEEF2;--ns-muted:#8F97A6;
+    --ns-accent:#F2B13C;--ns-accent-ink:#17120A;--ns-ring:rgba(242,177,60,.28);--ns-bad:#FF7B6B;}
+}
+
+html,body{background:var(--ns-surface)!important;color:var(--ns-ink);font-family:var(--ns-body)}
+.bg_one{display:none!important}
+
+/* the card */
+.signin_container{width:100%;max-width:460px;min-height:0;margin:0 auto;box-shadow:none;background:transparent;overflow:visible}
+.signin_box{width:100%;min-height:0;padding:28px 28px 8px;background:transparent;border-right:0;float:none;display:block}
+.signin_head{font:700 26px/1.2 var(--ns-display);color:var(--ns-ink);margin-bottom:24px;padding-top:0}
+.text16,.service_name,.pass_name,.backup_desc,.username,.Notyou,.signup_text,.checkbox_label,.option_title{color:var(--ns-ink)}
+.option_description,.pass_policy,.nonclickelem{color:var(--ns-muted)}
+
+/* fields */
+.textbox_label{color:var(--ns-muted);font-weight:700;font-size:15px}
+.textbox,#captcha,#bcaptcha{height:48px;background:var(--ns-bg);color:var(--ns-ink);border:1px solid var(--ns-line);border-radius:10px;text-indent:14px;font-family:var(--ns-body);font-size:16px}
+.textbox:valid{border:1px solid var(--ns-line)}
+.textbox:focus{border:1px solid var(--ns-accent);box-shadow:0 0 0 3px var(--ns-ring)}
+.textbox.errorborder,.errorborder:focus{border:1px solid var(--ns-bad);box-shadow:0 0 0 3px rgba(178,58,40,.18)}
+.show_hide_password{color:var(--ns-muted)}
+.field_error,.fielderror,.errorlabel,.pass_policy_error{color:var(--ns-bad)}
+
+/* buttons and links */
+.btn{height:48px;border-radius:10px;text-transform:none;letter-spacing:0;font:700 16px var(--ns-body)}
+.blue,.green{background:var(--ns-accent);color:var(--ns-accent-ink);box-shadow:none}
+.blue:hover,.green:hover{filter:brightness(1.07);box-shadow:none}
+.grey{background:transparent;color:var(--ns-ink);border:1px solid var(--ns-line)}
+.changeloadbtn:before{border-color:var(--ns-accent-ink);border-top-color:transparent}
+.bluetext,.bluetext_action,.fielderror a,.bluetext_action a{color:var(--ns-accent)}
+.checkbox{border-color:var(--ns-line);background:var(--ns-bg)}
+.options:hover,.optionstry:hover,.backoption:hover{background:var(--ns-bg)}
+.img_option,.nopassword_icon{color:var(--ns-accent)}
+.line{background:var(--ns-line)}
+.nopassword_container{background:var(--ns-bg);border-color:var(--ns-line)}
+
+/* messages that slide in at the top */
+.Alert,.Errormsg{background:var(--ns-ink);border-radius:10px}
+.alert_message,.error_message{color:var(--ns-surface);font-family:var(--ns-body)}
+
+@media only screen and (max-width:600px){
+  .signin_box{padding:20px 4px 4px}
+  .textbox,.textbox:focus{background:var(--ns-bg);border:1px solid var(--ns-line);border-radius:10px;text-indent:14px}
+  .textbox:focus{border-color:var(--ns-accent)}
+}

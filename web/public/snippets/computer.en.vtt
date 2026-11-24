@@ -1,0 +1,109 @@
+WEBVTT
+
+1
+00:00:00.400 --> 00:00:03.944
+Every computer, from a phone to a laptop, does the same four things.
+
+2
+00:00:04.294 --> 00:00:08.830
+It takes input, it processes it, it shows output, and it stores what matters.
+
+3
+00:00:09.180 --> 00:00:12.644
+Let's follow one small sum, two plus three, all the way through.
+
+4
+00:00:13.844 --> 00:00:15.180
+First, input.
+
+5
+00:00:15.530 --> 00:00:17.874
+You press the keys two, plus, and three.
+
+6
+00:00:18.224 --> 00:00:22.760
+Each key press becomes an electrical signal that travels into the computer.
+
+7
+00:00:23.960 --> 00:00:26.496
+Inside the computer, everything is a number.
+
+8
+00:00:26.846 --> 00:00:29.654
+The character two is stored as the number fifty.
+
+9
+00:00:30.004 --> 00:00:36.460
+In binary, that is zero zero one one zero zero one zero: eight tiny on and off switches called bits.
+
+10
+00:00:37.660 --> 00:00:41.444
+These numbers are kept in RAM, the computer's short-term memory.
+
+11
+00:00:41.794 --> 00:00:44.922
+Picture RAM as a long row of numbered lockers.
+
+12
+00:00:45.272 --> 00:00:48.512
+Our sum, two plus three, waits in locker zero five.
+
+13
+00:00:49.712 --> 00:00:52.840
+Now the CPU, the brain of the computer, gets to work.
+
+14
+00:00:53.190 --> 00:00:55.566
+It fetches the instruction from the locker.
+
+15
+00:00:55.916 --> 00:01:00.052
+It decodes it, which means working out what it asks for: add two and three.
+
+16
+00:01:00.402 --> 00:01:03.610
+Then it executes it, and the answer is five.
+
+17
+00:01:03.960 --> 00:01:07.712
+A CPU repeats this cycle billions of times every second.
+
+18
+00:01:08.912 --> 00:01:12.040
+The answer goes back into memory, and then to the screen.
+
+19
+00:01:12.390 --> 00:01:14.510
+Seeing the five appear is the output.
+
+20
+00:01:15.710 --> 00:01:17.094
+There is one catch.
+
+21
+00:01:17.444 --> 00:01:20.524
+RAM forgets everything the moment the power goes off.
+
+22
+00:01:20.874 --> 00:01:27.186
+So when you save, the computer copies your work to storage, such as an SSD, which remembers it even without power.
+
+23
+00:01:28.386 --> 00:01:30.266
+So, input goes in.
+
+24
+00:01:30.616 --> 00:01:33.600
+The CPU processes it, using memory.
+
+25
+00:01:33.950 --> 00:01:35.398
+Output comes out.
+
+26
+00:01:35.748 --> 00:01:37.916
+And storage keeps your work safe.
+
+27
+00:01:38.266 --> 00:01:40.162
+That is how every computer works.
