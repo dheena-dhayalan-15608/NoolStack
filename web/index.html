@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="NoolStack, Education As A Service: free tech courses that start from absolute zero, with an animation, a hands-on activity and a quiz in every lesson.">
 <title>NoolStack: Education As A Service</title>
+<!-- The Slate copy (noolstack.onslate.in) cannot reach the community function, so deleting an account
+     and Debug Desk would fail there. It sends visitors to the same page on the Catalyst address, where
+     everything works. Catalyst's own pages on Slate (/accounts/..., such as the create-password link in
+     a sign-up email) are not this page, so they keep working. -->
+<script>if (location.hostname === "noolstack.onslate.in") location.replace("https://eaas-60097457113.development.catalystserverless.in/app/" + location.search + location.hash);</script>
 <link rel="icon" href="logo.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

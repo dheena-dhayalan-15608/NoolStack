@@ -81,7 +81,7 @@ These steps follow the Catalyst documentation as of November 2026. They have not
 
 ### Deploying with Catalyst Slate instead
 
-Slate builds from the top of the repository. The `package.json` there lets it do that with its default Vue settings: `npm install` installs nothing at the top level, and `npm run build` builds `web/` into `dist/`, which is the folder Slate publishes. On Slate the site sits on a different address from the `community` function and Catalyst sign-in, so it runs in preview mode: guest progress only, and the Debug Desk stand-in.
+Slate builds from the top of the repository. The `package.json` there lets it do that with its default Vue settings: `npm install` installs nothing at the top level, and `npm run build` builds `web/` into `dist/`, which is the folder Slate publishes. On Slate the site sits on a different address from the `community` function, which Slate does not pass requests to, so deleting an account and Debug Desk cannot work there. So the Slate copy (`noolstack.onslate.in`) sends every visitor to the same page on the Catalyst address (a short script at the top of `web/index.html`). Catalyst's account pages on Slate (`/accounts/...`, such as the create-password link in a sign-up email) still open there; they ask for their stylesheets under `/app/css/`, so the Slate build also copies `web/public/css` to `dist/app/css`.
 
 ## Turn on accounts
 

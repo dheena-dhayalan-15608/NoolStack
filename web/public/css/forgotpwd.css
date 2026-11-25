@@ -58,3 +58,37 @@ html,body{background:var(--ns-surface)!important;color:var(--ns-ink);font-family
   .textbox:valid{border:1px solid var(--ns-line)}
   .textbox:focus{border-color:var(--ns-accent)}
 }
+
+/* "Create password" page, opened from the sign-up email (Catalyst's pconfirm page). It uses this
+   stylesheet in place of Zoho's own, so the page's states are laid out here too: the form
+   (.confirm_head), "Account Confirmed" (.success_container, shown by the page's script once the
+   password is set) and the expired-link and already-confirmed messages. */
+html:has(.confirmaccount_container,.confirm_head),html:has(.confirmaccount_container,.confirm_head) body{margin:0;min-height:100%;background:var(--ns-bg)!important}
+.confirmaccount_container *,.confirm_head,.confirm_head *{box-sizing:border-box}
+.confirmaccount_container a,.confirm_head a,.success_container a{color:var(--ns-accent);text-decoration:none}
+.confirmaccount_container a:hover,.confirm_head a:hover,.success_container a:hover{text-decoration:underline}
+.confirm_head,.urlexpired_container,.alreadyaccepted_container,.account_verified_container{display:block;width:460px;max-width:calc(100% - 32px);margin:64px auto 32px;padding:32px 36px;background:var(--ns-surface);border:1px solid var(--ns-line);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.confirmtitle,.urlexpired_title,.accepted_title{display:block;margin:0 0 10px;font:700 24px/1.25 var(--ns-display);color:var(--ns-ink)}
+.confirmdesc,.urlexpired_desc,.accepted_desc{display:block;margin:0 0 22px;font-size:16px;line-height:1.55;color:var(--ns-muted)}
+.urlexpired_title,.accepted_title,.urlexpired_desc,.accepted_desc{text-align:center}
+.hellouser{display:inline-flex;max-width:100%;margin:0 0 22px;border:1px solid var(--ns-line);border-radius:999px;background:var(--ns-bg)}
+.username{display:inline-block;padding:8px 14px;font-size:15px;line-height:20px;color:var(--ns-ink);word-break:break-all}
+#password_container,#cpassword_container{position:relative;margin-bottom:18px}
+.confirm_head .textbox{display:block;width:100%;padding-right:48px;outline:none}
+.show_hide_password{position:absolute;top:9px;right:12px;font-size:28px;color:var(--ns-muted);background:transparent;cursor:pointer}
+.fielderror{display:none;margin-top:8px;font-size:14px}
+.passwordpolicy{display:none;position:absolute;z-index:2;padding:10px 14px;background:var(--ns-surface);color:var(--ns-ink);border:1px solid var(--ns-line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.passwordpolicy ul{list-style:none;margin:6px 0 0;padding:0}
+.passwordpolicy li{line-height:28px;font-size:14px}
+.ppheader{font-weight:700;font-size:14px}
+.confirm_head .btn{display:block;width:100%;margin:6px 0 0;border:0;cursor:pointer}
+.success_container{display:none}
+.text16{display:block;margin:0 0 8px;text-align:center;font-size:16px;font-weight:700;color:var(--ns-accent);text-decoration:none}
+/* a tick or a cross in NoolStack's colours, in place of Zoho's pictures */
+.successicon,.expireicon{position:relative;width:76px;height:76px;margin:0 auto 18px;border-radius:50%;background:var(--ns-ring)}
+.successicon:after{content:"";position:absolute;left:28px;top:16px;width:16px;height:32px;border:solid var(--ns-accent);border-width:0 6px 6px 0;transform:rotate(45deg)}
+.expireicon:before,.expireicon:after{content:"";position:absolute;left:35px;top:18px;width:6px;height:40px;border-radius:3px;background:var(--ns-bad);transform:rotate(45deg)}
+.expireicon:after{transform:rotate(-45deg)}
+@media only screen and (max-width:600px){
+  .confirm_head,.urlexpired_container,.alreadyaccepted_container,.account_verified_container{margin:16px auto;padding:24px 20px;box-shadow:none}
+}
