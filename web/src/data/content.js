@@ -2311,6 +2311,6 @@ export const TASKX={
 };
 for(const n of NODESC.concat(NODES,NODES1))n.T.forEach((t,i)=>{const x=TASKX[n.id+"t"+i];if(x)Object.assign(t,x);});
 /* ---------- Details shown on the privacy and contact pages ---------- */
-export const LEGAL={owner:"",email:"noolstack@zohomail.in",phone:"8925502706",updated:"22 November 2026"};
+export const LEGAL={owner:"",email:"noolstack@zohomail.in",phone:"8925502706",updated:"25 November 2026"};
 /* ---------- Social accounts shown in the footer. Put each account's full link between the quotes. ---------- */
 export const SOCIAL={arattai:"",instagram:"",x:""};

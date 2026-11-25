@@ -140,6 +140,16 @@ Catalyst asks that its own stylesheet comes first, with custom styles after it. 
 - **The sign-up email.** Check the wording and sender of the email Catalyst sends, since it is the first thing a new learner sees.
 - **Test with a real account.** Create an account, set the password, sign in, complete a lesson, sign out, and sign in on another device to confirm the progress followed you.
 
+## Deleting an account
+
+Signed-in learners can delete their own account at the bottom of the Account page (`#/account`). They type DELETE to confirm. The `community` function (`POST /server/community/account/delete`) then:
+
+- deletes their rows in `Progress`, their votes in `DebugVotes` and their row in `Members`;
+- keeps their Debug Desk questions and answers, so other learners' answers still make sense, but changes the author to "Deleted member" and unlinks them (`user_id` becomes `deleted`); their reports are unlinked the same way;
+- deletes the Catalyst user, so the name, email address and sign-in are gone.
+
+The browser then clears its own copy of the progress and signs out. Guests have no account; "Start again" on the home page clears their progress.
+
 ## Debug Desk
 
 At `#/debug` (in the Resources menu), for members only, including for reading. Questions and answers about code and computers, like Stack Overflow:
@@ -166,7 +176,7 @@ Data Store tables, with no direct access for app users (only the function reads 
 | `DebugVotes` | `item_kind` (`q` or `a`), `item_id`, `user_id`, `value` (Int, 1 or -1) |
 | `Reports` | `reporter_id`, `reporter_name`, `kind`, `item_id`, `reason`, `excerpt`, `status` |
 
-The function's environment variables:
+The function's environment variables, set in the console under Serverless → Functions → `community` → Configuration. They are deliberately not listed in `functions/community/catalyst-config.json`, so `catalyst deploy` leaves the console values alone:
 
 - `ADMIN_EMAILS`: the moderators' sign-in emails. They see a **Moderation** button on Debug Desk.
 - `ANTHROPIC_API_KEY`: a Claude API key for the check that every question and answer is about learning. Each post costs a small amount. Without a key, posting is paused with a message saying so. `MODERATION_MODEL` is the model used (default `claude-haiku-5-5`).

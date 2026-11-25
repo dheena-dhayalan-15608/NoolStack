@@ -199,4 +199,38 @@ app.post("/admin/reports/:id", route(async (req, res, c) => {
   res.json({ ok: true });
 }));
 
+/* ---------- deleting an account ----------
+   Any signed-in learner can delete their own account. Their saved progress, votes and member name
+   are deleted. Their Debug Desk questions and answers stay, so other members' answers still make
+   sense, but are shown as written by "Deleted member" and no longer linked to them. Finally the
+   Catalyst user itself is deleted, so the email address and sign-in are gone too. */
+const DELETED = "Deleted member";
+/* Run sql (which must select ROWID) and hand each page of rows to fn, until no rows match.
+   fn has to make the rows stop matching (delete or change them), or the loop stops after 50 pages. */
+async function eachPage(db, sql, t, fn) {
+  for (let i = 0; i < 50; i++) {
+    const list = rows(await q(db, sql + " LIMIT 100"), t);
+    if (!list.length) return;
+    await fn(list);
+  }
+}
+app.post("/account/delete", route(async (req, res, c) => {
+  if (String(req.body.confirm || "") !== "DELETE") return res.status(400).json({ error: "Type DELETE to confirm." });
+  const uid = c.uid, owner = String(c.user.user_id).replace(/[^0-9A-Za-z_-]/g, "");
+  const wipe = t => list => table(c.db, t).deleteRows(list.map(r => r.ROWID));
+  const anon = (t, idCol, nameCol) => list => table(c.db, t).updateRows(list.map(r => ({ ROWID: r.ROWID, [idCol]: "deleted", [nameCol]: DELETED })));
+  await eachPage(c.db, `SELECT ROWID FROM Progress WHERE owner = '${owner}'`, "Progress", wipe("Progress"));
+  await eachPage(c.db, `SELECT ROWID FROM DebugVotes WHERE user_id = '${uid}'`, "DebugVotes", wipe("DebugVotes"));
+  await eachPage(c.db, `SELECT ROWID FROM DebugQuestions WHERE user_id = '${uid}'`, "DebugQuestions", anon("DebugQuestions", "user_id", "name"));
+  await eachPage(c.db, `SELECT ROWID FROM DebugAnswers WHERE user_id = '${uid}'`, "DebugAnswers", anon("DebugAnswers", "user_id", "name"));
+  await eachPage(c.db, `SELECT ROWID FROM Reports WHERE reporter_id = '${uid}'`, "Reports", anon("Reports", "reporter_id", "reporter_name"));
+  if (c.me) await table(c.db, "Members").deleteRow(c.me.ROWID);
+  try { await c.db.userManagement().deleteUser(c.user.user_id); }
+  catch (e) {
+    console.error("delete user", e && e.message);
+    return res.status(500).json({ error: "Your progress and posts were cleared, but the account itself could not be deleted. Please contact us and we will finish it." });
+  }
+  res.json({ ok: true });
+}));
+
 module.exports = app;

@@ -34,5 +34,14 @@ export const useAuth = defineStore("auth", () => {
     });
   }
   const accountLabel = computed(() => user.value ? (user.value.first_name || "Account") : "Sign in");
-  return { user, onCatalyst, userVersion, syncText, ready, accountLabel, start, signIn: Store.signIn, signUp: Store.signUp, signOut: Store.signOut };
+  /** Delete the account, clear this browser's copy of the progress, then sign out. */
+  async function deleteAccount() {
+    await Store.deleteAccount();
+    useProgress().forgetLocal();
+    try { localStorage.removeItem("noolstack-demo-debugdesk"); } catch (e) { /* storage blocked */ }
+    user.value = null;
+    userVersion.value++;
+    Store.signOut();
+  }
+  return { user, onCatalyst, userVersion, syncText, ready, accountLabel, start, deleteAccount, signIn: Store.signIn, signUp: Store.signUp, signOut: Store.signOut };
 });

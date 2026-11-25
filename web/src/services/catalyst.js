@@ -84,3 +84,22 @@ export function signUp(d) {
   return window.catalyst.auth.signUp({ first_name: d.first, last_name: d.last, email_id: d.email, platform_type: "web", redirect_url: location.origin + location.pathname });
 }
 export function info() { return { user, onCatalyst }; }
+
+/** Delete the signed-in learner's account on the server (the community function deletes their saved
+    progress, votes and member name, anonymises their posts, and deletes the Catalyst user).
+    Saving to the account stops first, so nothing is written back afterwards. */
+export async function deleteAccount() {
+  if (!onCatalyst || !user) throw new Error("You need to be signed in to delete your account.");
+  clearTimeout(timer);
+  pending = null;
+  const headers = { "Content-Type": "application/json" }, m = document.cookie.match(/(?:^|;\s*)ZD_CSRF_TOKEN=([^;]+)/);
+  if (m) headers["X-ZCSRF-TOKEN"] = "zd_csrparam=" + decodeURIComponent(m[1]);
+  let r;
+  try { r = await fetch("/server/community/account/delete", { method: "POST", credentials: "same-origin", headers, body: JSON.stringify({ confirm: "DELETE" }) }); }
+  catch (e) { throw new Error("Could not reach NoolStack. Check your connection and try again."); }
+  let d = {};
+  try { d = await r.json(); } catch (e) { /* not JSON */ }
+  if (!r.ok) throw new Error(d.error || "Your account could not be deleted. Please try again.");
+  user = null;
+  rowIds = [];
+}

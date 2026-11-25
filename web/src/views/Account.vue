@@ -19,6 +19,19 @@ onMounted(mountSignIn);
 /* the sign-in check finishes after the page may already be open */
 watch(() => auth.userVersion, mountSignIn);
 
+/* deleting the account: a second step where the learner types DELETE */
+const delOpen = ref(false), delText = ref(""), delErr = ref(""), delBusy = ref(false), delInput = ref(null);
+function openDelete() { delOpen.value = true; delText.value = ""; delErr.value = ""; nextTick(() => { if (delInput.value) delInput.value.focus(); }); }
+function closeDelete() { delOpen.value = false; nextTick(() => { const b = document.querySelector('[data-a="delstart"]'); if (b) b.focus(); }); }
+async function doDelete() {
+  if (delBusy.value) return;
+  if (delText.value.trim().toUpperCase() !== "DELETE") { delErr.value = "Type DELETE in capital letters to confirm."; if (delInput.value) delInput.value.focus(); return; }
+  delErr.value = "";
+  delBusy.value = true;
+  try { await auth.deleteAccount(); }
+  catch (e) { delErr.value = e.message; delBusy.value = false; }
+}
+
 function signup() {
   const v = k => f.value[k].trim();
   tried.value = true;
@@ -43,6 +56,14 @@ function signup() {
   <template v-if="auth.user">
     <h1>Your account</h1><p class="lede" style="margin-top:.8rem">Signed in as {{ name }}{{ auth.user.email_id ? " (" + auth.user.email_id + ")" : "" }}.</p>
     <section><p>Your progress is saved to your account, so it follows you to any device where you sign in.</p><button class="btn quiet" data-a="signout" @click="auth.signOut()">Sign out</button></section>
+    <section aria-labelledby="delh"><h2 id="delh">Delete your account</h2>
+      <p>This deletes your account, your name and email address, and all your progress, points and badges. It cannot be undone. Any questions and answers you posted in Debug Desk stay, so other learners can still use them, but they are shown as written by “Deleted member”.</p>
+      <div v-if="!delOpen" class="row"><button class="btn quiet" data-a="delstart" @click="openDelete">Delete my account</button></div>
+      <div v-else class="panel formbox">
+        <div class="field"><label for="delc">Type DELETE to confirm</label><input type="text" id="delc" ref="delInput" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="dele" :aria-invalid="delErr ? 'true' : null" v-model="delText" @keydown.enter="doDelete"><p class="err" id="dele" role="alert">{{ delErr }}</p></div>
+        <div class="row"><button class="btn" data-a="delconfirm" :disabled="delBusy" @click="doDelete">{{ delBusy ? "Deleting your account" : "Delete my account permanently" }}</button><button class="btn quiet" data-a="delcancel" :disabled="delBusy" @click="closeDelete">Cancel</button></div>
+      </div>
+    </section>
   </template>
   <template v-else>
     <h1>Your account</h1><p class="lede" style="margin-top:.8rem">An account keeps your progress and lets you pick it up on any device. The course is free, and it works without an account too.</p>

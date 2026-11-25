@@ -131,6 +131,11 @@ export const useProgress = defineStore("progress", () => {
     S.value.t = Date.now();
     Store.push(S.value);
   }
+  /** After deleting the account: clear progress in this browser only (nothing is sent anywhere). */
+  function forgetLocal() {
+    S.value = blank();
+    writeLocal();
+  }
   /** A newer copy arrived from the learner's account. */
   function adopt(d) {
     if (d && (d.t || 0) > (S.value.t || 0)) { S.value = Object.assign(blank(), d); writeLocal(); return true; }
@@ -140,5 +145,5 @@ export const useProgress = defineStore("progress", () => {
   function taskEntry(k) { return S.value.task[k] || (S.value.task[k] = { hints: 0 }); }
   const mapDone = () => S.value.map || (S.value.map = {});
 
-  return { S, curCourse, openSec, sq, save, reset, adopt, taskEntry, mapDone, nodePct, cpDone, cpPct, cpPassed, pjState, pjCount, projDone, itemPct, itemDone, coursePct, nextStop, points, stats, streak, BADGES };
+  return { S, curCourse, openSec, sq, save, reset, forgetLocal, adopt, taskEntry, mapDone, nodePct, cpDone, cpPct, cpPassed, pjState, pjCount, projDone, itemPct, itemDone, coursePct, nextStop, points, stats, streak, BADGES };
 });
