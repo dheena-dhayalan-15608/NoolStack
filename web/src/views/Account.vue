@@ -1,7 +1,7 @@
 <script setup>
 /* Sign in (Catalyst's own sign-in box) or create an account (this site's form). Without Catalyst,
    the forms are shown switched off, as a preview. */
-import { ref, computed, onMounted, nextTick, watch } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch } from "vue";
 import { useAuth } from "../stores/auth.js";
 import { party } from "../services/feedback.js";
 import DoneMsg from "../components/DoneMsg.vue";
@@ -13,7 +13,36 @@ const f = ref({ suF: "", suL: "", suE: "" }), errs = ref({ suF: "", suL: "", suE
 const note = ref({ show: false, cls: "fb", text: "" }), busy = ref(false), tried = ref(false);
 const FIELDS = [["suF", "First name", "text", "given-name", ""], ["suL", "Last name", "text", "family-name", "If you use a single name, enter it here as well."], ["suE", "Email address", "email", "email", "We send a link to this address so you can set your password."]];
 
-function mountSignIn() { if (!auth.user && auth.onCatalyst && acct.tab === "in") nextTick(() => { if (document.getElementById("login")) auth.signIn("login"); }); }
+/* Catalyst's sign-in box is an iframe. Each page inside it (sign in, sign up, forgot password) starts
+   as a blank white page until its styles load, so the box stays hidden behind a "Loading" line
+   whenever one of its pages is loading. */
+const loginLoading = ref(true);
+let loginWatch = null, revealTimer = null;
+function showWhenLoaded() { clearTimeout(revealTimer); requestAnimationFrame(() => { loginLoading.value = false; }); }
+function hookFrame(f) {
+  if (f.__nsHooked) return;
+  f.__nsHooked = true;
+  loginLoading.value = true;
+  revealTimer = setTimeout(showWhenLoaded, 10000);
+  f.addEventListener("load", () => {
+    try { f.contentWindow.addEventListener("pagehide", () => { loginLoading.value = true; clearTimeout(revealTimer); revealTimer = setTimeout(showWhenLoaded, 10000); }); } catch (e) { /* not reachable */ }
+    showWhenLoaded();
+  });
+}
+function mountSignIn() {
+  if (!auth.user && auth.onCatalyst && acct.tab === "in") nextTick(() => {
+    const box = document.getElementById("login");
+    /* only once per box: asking Catalyst again would rebuild the iframe and flash */
+    if (!box || box.querySelector("iframe") || box.dataset.started) return;
+    box.dataset.started = "1";
+    loginLoading.value = true;
+    if (loginWatch) loginWatch.disconnect();
+    loginWatch = new MutationObserver(() => { const f = box.querySelector("iframe"); if (f) hookFrame(f); });
+    loginWatch.observe(box, { childList: true, subtree: true });
+    auth.signIn("login");
+  });
+}
+onBeforeUnmount(() => { if (loginWatch) loginWatch.disconnect(); clearTimeout(revealTimer); });
 function tab(k) { acct.tab = k; window.scrollTo(0, 0); mountSignIn(); }
 onMounted(mountSignIn);
 /* the sign-in check finishes after the page may already be open */
@@ -69,7 +98,7 @@ function signup() {
     <h1>Your account</h1><p class="lede" style="margin-top:.8rem">An account keeps your progress and lets you pick it up on any device. The course is free, and it works without an account too.</p>
     <div v-if="!auth.onCatalyst" class="note" style="margin-top:1.4rem"><b>This is a preview, so accounts are switched off here.</b> The forms are shown so you can see how they look. They start working once the site is hosted on Zoho Catalyst. Until then, your progress is saved in this browser.</div>
     <div class="tabs" role="tablist"><button :class="['tab', { on: acct.tab === 'in' }]" role="tab" :aria-selected="String(acct.tab === 'in')" data-a="atab" @click="tab('in')">Sign in</button><button :class="['tab', { on: acct.tab === 'up' }]" role="tab" :aria-selected="String(acct.tab === 'up')" data-a="atab" @click="tab('up')">Create an account</button></div>
-    <div v-if="acct.tab === 'in' && auth.onCatalyst" class="panel formbox"><div id="login" style="min-height:26rem"></div></div>
+    <div v-if="acct.tab === 'in' && auth.onCatalyst" class="panel formbox"><div :class="['loginwrap', { loading: loginLoading }]"><p v-if="loginLoading" class="meta loginwait" role="status">Loading the sign-in box…</p><div id="login" style="min-height:26rem"></div></div></div>
     <div v-else-if="acct.tab === 'in'" class="panel formbox"><p class="meta">On the live site, Zoho’s secure sign-in box appears here. You can sign in with an email address and password, or with a Zoho or Google account. It also has a link for a forgotten password.</p>
       <div class="field"><label for="pvE">Email address</label><input type="email" id="pvE" disabled></div><div class="field"><label for="pvP">Password</label><input type="password" id="pvP" disabled></div><button class="btn" disabled>Sign in</button></div>
     <div v-else-if="acct.signupDone" class="panel formbox"><DoneMsg text="Check your email." fresh /><p>We sent a message to <b>{{ acct.signupDone }}</b> with a link to set your password. Open it, then come back here and sign in.</p><button class="btn quiet" data-a="atab" @click="tab('in')">Go to sign in</button></div>

@@ -1,3 +1,4 @@
+import { callServer } from "./server.js";
 /* Accounts and saving.
    Guest mode: progress is kept in this browser (the progress store writes it to localStorage).
    Signed in: when the site is hosted on Zoho Catalyst, progress is also saved to a
@@ -92,14 +93,7 @@ export async function deleteAccount() {
   if (!onCatalyst || !user) throw new Error("You need to be signed in to delete your account.");
   clearTimeout(timer);
   pending = null;
-  const headers = { "Content-Type": "application/json" }, m = document.cookie.match(/(?:^|;\s*)ZD_CSRF_TOKEN=([^;]+)/);
-  if (m) headers["X-ZCSRF-TOKEN"] = "zd_csrparam=" + decodeURIComponent(m[1]);
-  let r;
-  try { r = await fetch("/server/community/account/delete", { method: "POST", credentials: "same-origin", headers, body: JSON.stringify({ confirm: "DELETE" }) }); }
-  catch (e) { throw new Error("Could not reach NoolStack. Check your connection and try again."); }
-  let d = {};
-  try { d = await r.json(); } catch (e) { /* not JSON */ }
-  if (!r.ok) throw new Error(d.error || "Your account could not be deleted. Please try again.");
+  await callServer("POST", "/account/delete", { confirm: "DELETE" }, "Your account could not be deleted. Please try again.");
   user = null;
   rowIds = [];
 }

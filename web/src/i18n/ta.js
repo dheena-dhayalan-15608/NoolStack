@@ -642,6 +642,8 @@ export const TA={
 "Delete your account": "உங்கள் கணக்கை நீக்குங்கள்",
 "This deletes your account, your name and email address, and all your progress, points and badges. It cannot be undone. Any questions and answers you posted in Debug Desk stay, so other learners can still use them, but they are shown as written by “Deleted member”.": "இது உங்கள் கணக்கு, உங்கள் பெயர், மின்னஞ்சல் முகவரி, உங்கள் முன்னேற்றம், புள்ளிகள், பதக்கங்கள் அனைத்தையும் நீக்கும். இதைத் திரும்பப் பெற முடியாது. Debug Desk இல் நீங்கள் பதிவிட்ட கேள்விகளும் பதில்களும் மற்ற கற்பவர்கள் பயன்படுத்துவதற்காக அப்படியே இருக்கும்; ஆனால் அவை “Deleted member” எழுதியதாகக் காட்டப்படும்.",
 "Delete my account": "என் கணக்கை நீக்கு",
+"Loading the sign-in box…": "உள்நுழைவுப் பெட்டி ஏற்றப்படுகிறது…",
+"Could not reach NoolStack. Check your connection and try again.": "NoolStack ஐ அடைய முடியவில்லை. உங்கள் இணைய இணைப்பைச் சரிபார்த்து மீண்டும் முயலுங்கள்.",
 "Cancel": "ரத்து செய்",
 "Type DELETE to confirm": "உறுதிசெய்ய DELETE என்று தட்டச்சு செய்யுங்கள்",
 "Delete my account permanently": "என் கணக்கை நிரந்தரமாக நீக்கு",

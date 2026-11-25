@@ -3,6 +3,7 @@
    In the preview there is no server, so a stand-in keeps everything in this browser
    (under "noolstack-demo-debugdesk"). Moved from the legacy js/debugdesk.js. */
 import { reactive } from "vue";
+import { callServer } from "./server.js";
 
 export const CR_RULES = ["Keep it about learning: questions, explanations, resources and projects.", "Be kind. No insults, harassment or hate.", "No adverts, spam or links to sell things.", "Never share passwords, phone numbers or other private details.", "Report anything that breaks these rules."];
 
@@ -24,15 +25,7 @@ export function crMd(src) {
 /* the server, or the preview stand-in */
 export async function crApi(method, path, body) {
   if (CR.demo) return crDemo(method, path, body || {});
-  const headers = { "Content-Type": "application/json" }, m = document.cookie.match(/(?:^|;\s*)ZD_CSRF_TOKEN=([^;]+)/);
-  if (m) headers["X-ZCSRF-TOKEN"] = "zd_csrparam=" + decodeURIComponent(m[1]);
-  let r;
-  try { r = await fetch("/server/community" + path, { method, credentials: "same-origin", headers, body: method === "GET" ? undefined : JSON.stringify(body || {}) }); }
-  catch (e) { throw new Error("Could not reach Debug Desk. Check your connection."); }
-  let d = {};
-  try { d = await r.json(); } catch (e) { /* not JSON */ }
-  if (!r.ok) throw new Error(d.error || "Something went wrong. Please try again.");
-  return d;
+  return callServer(method, path, body);
 }
 
 /* ---- preview stand-in: the same answers as the server, kept in this browser ---- */

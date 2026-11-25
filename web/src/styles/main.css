@@ -294,6 +294,11 @@ button.acell{color:var(--ink);cursor:pointer}
 .tab.on{color:var(--accent);border-bottom-color:var(--accent)}
 .formbox{max-width:30rem}
 #login iframe{display:block;width:100%!important;min-height:600px!important;border:0}
+/* the sign-in iframe: no white backdrop behind its pages, and hidden while a page inside it loads */
+#login iframe{color-scheme:light;background:transparent}
+.loginwrap{position:relative}
+.loginwrap.loading #login iframe{visibility:hidden}
+.loginwait{position:absolute;top:1.5rem;left:0;right:0;margin:0;text-align:center}
 .field{display:grid;gap:.3rem;margin-bottom:1rem}
 .field input{width:100%}
 .field input[aria-invalid="true"]{border-color:var(--bad)}
