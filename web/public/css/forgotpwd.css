@@ -34,6 +34,9 @@ html,body{background:var(--ns-surface)!important;color:var(--ns-ink);font-family
 .textbox,.otp_container,#captcha{height:48px;background:var(--ns-bg);color:var(--ns-ink);border:1px solid var(--ns-line);border-radius:10px;text-indent:14px;font-family:var(--ns-body);font-size:16px}
 .otp_container{text-indent:0}
 .customOtp{color:var(--ns-ink)}
+/* placeholders ("Please enter your email address") readable in light and dark, with room from the edge */
+input.textbox{padding-left:14px!important;text-indent:0!important}
+.textbox::placeholder,#captcha::placeholder,#bcaptcha::placeholder{color:var(--ns-muted)!important;opacity:1!important}
 .textbox:focus{border:1px solid var(--ns-accent);box-shadow:0 0 0 3px var(--ns-ring)}
 .errorborder{border:1px solid var(--ns-bad)!important}
 .textbox:-webkit-autofill,.textbox:-webkit-autofill:hover,.textbox:-webkit-autofill:focus,.textbox:-webkit-autofill:active{-webkit-box-shadow:inset 0 0 0 9999px var(--ns-bg);-webkit-text-fill-color:var(--ns-ink)}

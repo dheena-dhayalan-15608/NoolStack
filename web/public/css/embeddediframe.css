@@ -33,6 +33,9 @@ html,body{background:var(--ns-surface)!important;color:var(--ns-ink);font-family
 /* fields */
 .textbox_label{color:var(--ns-muted);font-weight:700;font-size:15px}
 .textbox,#captcha,#bcaptcha{height:48px;background:var(--ns-bg);color:var(--ns-ink);border:1px solid var(--ns-line);border-radius:10px;text-indent:14px;font-family:var(--ns-body);font-size:16px}
+/* placeholders ("Please enter your email address") readable in light and dark, with room from the edge */
+input.textbox{padding-left:14px!important;text-indent:0!important}
+.textbox::placeholder,#captcha::placeholder,#bcaptcha::placeholder{color:var(--ns-muted)!important;opacity:1!important}
 .textbox:valid{border:1px solid var(--ns-line)}
 .textbox:focus{border:1px solid var(--ns-accent);box-shadow:0 0 0 3px var(--ns-ring)}
 .textbox.errorborder,.errorborder:focus{border:1px solid var(--ns-bad);box-shadow:0 0 0 3px rgba(178,58,40,.18)}

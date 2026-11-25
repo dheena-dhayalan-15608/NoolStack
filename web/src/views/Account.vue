@@ -145,7 +145,7 @@ function signup() {
       <div class="authart">
         <AuthArt :mode="artMode" />
         <Transition name="hello" mode="out-in">
-          <div v-if="artMode === 'forgot'" key="forgot" class="authhello"><b>Forgot your password?</b><span>It happens. Follow the steps and you will have a new one in a minute.</span></div>
+          <div v-if="artMode === 'forgot'" key="forgot" class="authhello"><b>Forgot your password?</b><span>Enter the email address you signed up with. We will email you a code to set a new password.</span></div>
           <div v-else-if="acct.tab === 'in'" key="in" class="authhello"><b>Welcome back!</b><span>Sign in to pick up where you left off.</span></div>
           <div v-else key="up" class="authhello"><b>Nice to meet you!</b><span>A free account keeps your progress on every device.</span></div>
         </Transition>

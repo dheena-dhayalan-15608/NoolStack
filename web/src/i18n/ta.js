@@ -649,7 +649,7 @@ export const TA={
 "A free account keeps your progress on every device.": "இலவசக் கணக்கு உங்கள் முன்னேற்றத்தை எல்லாச் சாதனங்களிலும் வைத்திருக்கும்.",
 "New to NoolStack?": "NoolStack க்குப் புதியவரா?",
 "Forgot your password?": "உங்கள் கடவுச்சொல்லை மறந்துவிட்டீர்களா?",
-"It happens. Follow the steps and you will have a new one in a minute.": "இது யாருக்கும் நடக்கும். படிகளைப் பின்பற்றுங்கள், ஒரு நிமிடத்தில் புதிய கடவுச்சொல் கிடைக்கும்.",
+"Enter the email address you signed up with. We will email you a code to set a new password.": "நீங்கள் பதிவு செய்த மின்னஞ்சல் முகவரியை உள்ளிடுங்கள். புதிய கடவுச்சொல்லை அமைக்க ஒரு குறியீட்டை மின்னஞ்சலில் அனுப்புவோம்.",
 "Already have an account?": "ஏற்கெனவே கணக்கு உள்ளதா?",
 "Could not reach NoolStack. Check your connection and try again.": "NoolStack ஐ அடைய முடியவில்லை. உங்கள் இணைய இணைப்பைச் சரிபார்த்து மீண்டும் முயலுங்கள்.",
 "Cancel": "ரத்து செய்",
