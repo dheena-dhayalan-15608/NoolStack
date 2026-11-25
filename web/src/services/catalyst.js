@@ -64,11 +64,14 @@ async function flush() {
 }
 
 /* The sign-in box uses NoolStack's look (css/embeddediframe.css), and "Forgot password" opens inside
-   the same box with a matching look (css/forgotpwd.css). Paths are worked out from where the site is hosted. */
+   the same box with a matching look (css/forgotpwd.css). After signing in, Catalyst returns the learner
+   to the Account page (service_url); without it, Catalyst sends them to /app/, which is blank on Slate.
+   Paths are worked out from where the site is hosted. */
 export function signIn(elementId) {
   if (!onCatalyst) return;
   const base = basePath();
   window.catalyst.auth.signIn(elementId, {
+    service_url: base + "#account",
     css_url: base + "css/embeddediframe.css",
     is_customize_forgot_password: true,
     forgot_password_id: elementId,

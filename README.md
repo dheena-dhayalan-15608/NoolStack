@@ -115,6 +115,7 @@ The sign-in box (Catalyst Embedded Authentication) uses NoolStack's colours and 
 
 | Setting | Value |
 |---|---|
+| `service_url` | `#account`: where Catalyst sends the learner after signing in (without it, Catalyst goes to `/app/`, which is blank on Slate) |
 | `css_url` | `css/embeddediframe.css` |
 | `is_customize_forgot_password` | `true` |
 | `forgot_password_id` | the same box as the sign-in (`login`) |
