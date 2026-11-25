@@ -293,6 +293,37 @@ button.acell{color:var(--ink);cursor:pointer}
 .tab:hover{color:var(--ink)}
 .tab.on{color:var(--accent);border-bottom-color:var(--accent)}
 .formbox{max-width:30rem}
+/* Account: the sign-in / create-an-account card. The mascot half and the form half swap sides with a
+   slide (sign in: mascot left; create an account: mascot right) while the form cross-fades. */
+.authcard{position:relative;display:grid;grid-template-columns:42% 58%;min-height:40rem;margin:0 0 1rem;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.authart,.authform{grid-row:1;transition:transform .7s cubic-bezier(.65,0,.35,1)}
+.authart{grid-column:1;position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;padding:2rem 0 2rem;background:var(--raised);overflow:hidden}
+.authform{grid-column:2;display:flex;flex-direction:column;justify-content:center;padding:1.6rem clamp(1rem,3vw,2.4rem)}
+.authcard.is-up .authart{transform:translateX(138.1%)}
+.authcard.is-up .authform{transform:translateX(-72.41%)}
+.authhello{display:flex;flex-direction:column;gap:.3rem;max-width:18rem;padding:0 1.2rem;text-align:center}
+.authhello b{font:700 1.4rem/1.2 var(--display)}
+.authhello span{color:var(--muted)}
+.authpane .formbox{max-width:none}
+.authswitch{margin:1.1rem 0 0;color:var(--muted)}
+.formswap-enter-active,.formswap-leave-active{transition:opacity .3s ease,transform .3s ease}
+.formswap-enter-from{opacity:0;transform:translateY(14px)}
+.formswap-leave-to{opacity:0;transform:translateY(-14px)}
+.hello-enter-active,.hello-leave-active{transition:opacity .25s ease}
+.hello-enter-from,.hello-leave-to{opacity:0}
+@media (max-width:760px){
+  .authcard{grid-template-columns:1fr;min-height:0}
+  .authart{grid-column:1;grid-row:1;flex-direction:row;gap:.8rem;padding:1rem 1rem 1rem 0;justify-content:flex-start}
+  .authcard .authart .authsvg{width:7.5rem;height:8.5rem;max-height:none;flex:none}
+  .authhello{text-align:left;padding:0;align-items:flex-start}
+  .authform{grid-column:1;grid-row:2;padding:1.2rem 1rem}
+  .authcard.is-up .authart,.authcard.is-up .authform{transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .authart,.authform{transition:none}
+  .formswap-enter-active,.formswap-leave-active{transition:opacity .15s linear}
+  .formswap-enter-from,.formswap-leave-to{transform:none}
+}
 #login iframe{display:block;width:100%!important;min-height:600px!important;border:0}
 /* the sign-in iframe: no white backdrop behind its pages, and hidden while a page inside it loads */
 #login iframe{background:transparent}

@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { ref, shallowRef, computed } from "vue";
 import * as Store from "../services/catalyst.js";
 import { useProgress } from "./progress.js";
+import { rememberFarewell } from "../components/acctState.js";
 
 const SYNC = {
   guest: "Guest mode. Progress is saved in this browser.",
@@ -34,14 +35,15 @@ export const useAuth = defineStore("auth", () => {
     });
   }
   const accountLabel = computed(() => user.value ? (user.value.first_name || "Account") : "Sign in");
-  /** Delete the account, clear this browser's copy of the progress, then sign out. */
+  /** Delete the account, clear this browser's copy of the progress, then sign out.
+      The page keeps showing "Deleting your account" until Catalyst's sign-out reloads it (no flash of
+      the sign-in box in between); after the reload the Account page says goodbye (see components/acctState.js). */
   async function deleteAccount() {
     await Store.deleteAccount();
     useProgress().forgetLocal();
     try { localStorage.removeItem("noolstack-demo-debugdesk"); } catch (e) { /* storage blocked */ }
-    user.value = null;
-    userVersion.value++;
-    Store.signOut();
+    rememberFarewell();
+    Store.signOut("#/account");
   }
   return { user, onCatalyst, userVersion, syncText, ready, accountLabel, start, deleteAccount, signIn: Store.signIn, signUp: Store.signUp, signOut: Store.signOut };
 });

@@ -79,7 +79,8 @@ export function signIn(elementId) {
     forgot_password_css_url: base + "css/forgotpwd.css"
   });
 }
-export function signOut() { if (onCatalyst) window.catalyst.auth.signOut(location.origin + location.pathname); }
+/** Sign out. Catalyst then reloads the site at this page, or at `hash` (such as "#/account") when given. */
+export function signOut(hash) { if (onCatalyst) window.catalyst.auth.signOut(location.origin + location.pathname + (hash || "")); }
 export function signUp(d) {
   if (!onCatalyst) return Promise.reject(new Error("Accounts are not available here"));
   return window.catalyst.auth.signUp({ first_name: d.first, last_name: d.last, email_id: d.email, platform_type: "web", redirect_url: location.origin + location.pathname });

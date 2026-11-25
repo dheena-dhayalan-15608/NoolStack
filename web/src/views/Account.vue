@@ -6,6 +6,7 @@ import { useAuth } from "../stores/auth.js";
 import { useSettings } from "../stores/settings.js";
 import { party } from "../services/feedback.js";
 import DoneMsg from "../components/DoneMsg.vue";
+import AuthArt from "../components/AuthArt.vue";
 import { acct } from "../components/acctState.js";
 
 const auth = useAuth();
@@ -51,7 +52,21 @@ function mountSignIn() {
   });
 }
 onBeforeUnmount(() => { if (loginWatch) loginWatch.disconnect(); clearTimeout(revealTimer); });
-function tab(k) { acct.tab = k; window.scrollTo(0, 0); mountSignIn(); }
+const paneHead = ref(null);
+/* switch between signing in and creating an account. The new form appears once the old one has slid
+   out (onPaneIn). fromLink: the link that was pressed disappears, so focus moves to the new form. */
+let focusNewPane = false;
+function tab(k, fromLink) {
+  if (acct.tab === k) return;
+  focusNewPane = !!fromLink;
+  acct.tab = k;
+}
+function onPaneIn() {
+  mountSignIn();
+  if (focusNewPane && paneHead.value) paneHead.value.focus({ preventScroll: true });
+  focusNewPane = false;
+}
+
 onMounted(mountSignIn);
 /* the sign-in check finishes after the page may already be open */
 watch(() => auth.userVersion, mountSignIn);
@@ -106,14 +121,32 @@ function signup() {
     <h1>Your account</h1><p class="lede" style="margin-top:.8rem">An account keeps your progress and lets you pick it up on any device. The course is free, and it works without an account too.</p>
     <div v-if="!auth.onCatalyst" class="note" style="margin-top:1.4rem"><b>This is a preview, so accounts are switched off here.</b> The forms are shown so you can see how they look. They start working once the site is hosted on Zoho Catalyst. Until then, your progress is saved in this browser.</div>
     <div class="tabs" role="tablist"><button :class="['tab', { on: acct.tab === 'in' }]" role="tab" :aria-selected="String(acct.tab === 'in')" data-a="atab" @click="tab('in')">Sign in</button><button :class="['tab', { on: acct.tab === 'up' }]" role="tab" :aria-selected="String(acct.tab === 'up')" data-a="atab" @click="tab('up')">Create an account</button></div>
-    <div v-if="acct.tab === 'in' && auth.onCatalyst" class="panel formbox"><div :class="['loginwrap', { loading: loginLoading }]"><div v-if="loginLoading" class="loginwait" role="status"><span class="spinner" aria-hidden="true"></span><span class="meta">Loading the sign-in box…</span></div><div id="login" style="min-height:26rem"></div></div></div>
-    <div v-else-if="acct.tab === 'in'" class="panel formbox"><p class="meta">On the live site, Zoho’s secure sign-in box appears here. You can sign in with an email address and password, or with a Zoho or Google account. It also has a link for a forgotten password.</p>
-      <div class="field"><label for="pvE">Email address</label><input type="email" id="pvE" disabled></div><div class="field"><label for="pvP">Password</label><input type="password" id="pvP" disabled></div><button class="btn" disabled>Sign in</button></div>
-    <div v-else-if="acct.signupDone" class="panel formbox"><DoneMsg text="Check your email." fresh /><p>We sent a message to <b>{{ acct.signupDone }}</b> with a link to set your password. Open it, then come back here and sign in.</p><button class="btn quiet" data-a="atab" @click="tab('in')">Go to sign in</button></div>
-    <div v-else class="panel formbox">
-      <div v-for="[id, label, type, auto, help] in FIELDS" :key="id" class="field"><label :for="id">{{ label }}</label><span v-if="help" class="meta" :id="id + 'h'">{{ help }}</span><input :type="type" :id="id" :autocomplete="auto" :aria-describedby="(help ? id + 'h ' : '') + id + 'e'" :aria-invalid="tried ? (errs[id] ? 'true' : 'false') : null" v-model="f[id]" @keydown.enter="signup"><p class="err" :id="id + 'e'" role="alert">{{ errs[id] }}</p></div>
-      <label class="check"><input type="checkbox" id="suC" v-model="agreed"> <span>I agree to my name, email address and course progress being stored so that my account works.</span></label><p class="err" id="suCe" role="alert">{{ errs.suC }}</p>
-      <button class="btn" data-a="signup" :disabled="busy" @click="signup">{{ busy ? "Creating your account" : "Create my account" }}</button><p :class="note.cls" id="suX" role="status" :hidden="!note.show">{{ note.text }}</p>
+    <div :class="['authcard', 'is-' + acct.tab]">
+      <div class="authart">
+        <AuthArt :mode="acct.tab" />
+        <Transition name="hello" mode="out-in">
+          <div v-if="acct.tab === 'in'" key="in" class="authhello"><b>Welcome back!</b><span>Sign in to pick up where you left off.</span></div>
+          <div v-else key="up" class="authhello"><b>Nice to meet you!</b><span>A free account keeps your progress on every device.</span></div>
+        </Transition>
+      </div>
+      <div class="authform">
+        <Transition name="formswap" mode="out-in" @after-enter="onPaneIn">
+          <div :key="acct.tab" class="authpane">
+            <h2 class="sr-only" tabindex="-1" ref="paneHead">{{ acct.tab === 'in' ? 'Sign in' : 'Create an account' }}</h2>
+          <div v-if="acct.tab === 'in' && auth.onCatalyst" class="formbox"><div :class="['loginwrap', { loading: loginLoading }]"><div v-if="loginLoading" class="loginwait" role="status"><span class="spinner" aria-hidden="true"></span><span class="meta">Loading the sign-in box…</span></div><div id="login" style="min-height:26rem"></div></div></div>
+          <div v-else-if="acct.tab === 'in'" class="formbox"><p class="meta">On the live site, Zoho’s secure sign-in box appears here. You can sign in with an email address and password, or with a Zoho or Google account. It also has a link for a forgotten password.</p>
+            <div class="field"><label for="pvE">Email address</label><input type="email" id="pvE" disabled></div><div class="field"><label for="pvP">Password</label><input type="password" id="pvP" disabled></div><button class="btn" disabled>Sign in</button></div>
+          <div v-else-if="acct.signupDone" class="formbox"><DoneMsg text="Check your email." fresh /><p>We sent a message to <b>{{ acct.signupDone }}</b> with a link to set your password. Open it, then come back here and sign in.</p><button class="btn quiet" data-a="atab" @click="tab('in')">Go to sign in</button></div>
+          <div v-else class="formbox">
+            <div v-for="[id, label, type, auto, help] in FIELDS" :key="id" class="field"><label :for="id">{{ label }}</label><span v-if="help" class="meta" :id="id + 'h'">{{ help }}</span><input :type="type" :id="id" :autocomplete="auto" :aria-describedby="(help ? id + 'h ' : '') + id + 'e'" :aria-invalid="tried ? (errs[id] ? 'true' : 'false') : null" v-model="f[id]" @keydown.enter="signup"><p class="err" :id="id + 'e'" role="alert">{{ errs[id] }}</p></div>
+            <label class="check"><input type="checkbox" id="suC" v-model="agreed"> <span>I agree to my name, email address and course progress being stored so that my account works.</span></label><p class="err" id="suCe" role="alert">{{ errs.suC }}</p>
+            <button class="btn" data-a="signup" :disabled="busy" @click="signup">{{ busy ? "Creating your account" : "Create my account" }}</button><p :class="note.cls" id="suX" role="status" :hidden="!note.show">{{ note.text }}</p>
+          </div>
+            <p v-if="acct.tab === 'in'" class="authswitch">New to NoolStack? <button class="linkbtn" data-a="atab" @click="tab('up', true)">Create an account</button></p>
+            <p v-else-if="!acct.signupDone" class="authswitch">Already have an account? <button class="linkbtn" data-a="atab" @click="tab('in', true)">Sign in</button></p>
+          </div>
+        </Transition>
+      </div>
     </div>
     <p class="meta" style="margin-top:1.2rem;max-width:34rem">What your account stores: your name, your email address and your course progress. Your password is handled by Zoho and is never seen by this site. The live site also has a chat box provided by Zoho SalesIQ, which keeps its own record of visits and conversations.</p>
   </template>
