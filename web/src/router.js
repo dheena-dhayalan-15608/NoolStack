@@ -4,6 +4,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import { NODES, NODES1, CHECKS, PROJECTS } from "./data/content.js";
 import { NODE, course, useProgress } from "./stores/progress.js";
 import { CR, crRtClose } from "./services/debugdesk.js";
+import { acct } from "./components/acctState.js";
 
 import Home from "./views/Home.vue";
 import Lesson from "./views/Lesson.vue";
@@ -67,6 +68,10 @@ const routes = [
   { path: "/rules", component: Rules },
   { path: "/:pathMatch(.*)*", component: Home }
 ];
+
+/* After deleting an account, Catalyst's sign-out reloads the site; the goodbye is on the Account page.
+   (Set before the router is made, because the router reads the address when it is made.) */
+if (acct.farewell && !/^#\/?account/.test(location.hash)) history.replaceState(history.state, "", location.pathname + location.search + "#/account");
 
 export const router = createRouter({
   history: createWebHashHistory(),

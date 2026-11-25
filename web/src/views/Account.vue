@@ -51,7 +51,7 @@ function mountSignIn() {
     auth.signIn("login");
   });
 }
-onBeforeUnmount(() => { if (loginWatch) loginWatch.disconnect(); clearTimeout(revealTimer); });
+onBeforeUnmount(() => { if (loginWatch) loginWatch.disconnect(); clearTimeout(revealTimer); acct.farewell = false; });
 const paneHead = ref(null);
 /* switch between signing in and creating an account. The new form appears once the old one has slid
    out (onPaneIn). fromLink: the link that was pressed disappears, so focus moves to the new form. */
@@ -75,6 +75,10 @@ watch(() => auth.userVersion, mountSignIn);
 const delOpen = ref(false), delText = ref(""), delErr = ref(""), delBusy = ref(false), delInput = ref(null);
 function openDelete() { delOpen.value = true; delText.value = ""; delErr.value = ""; nextTick(() => { if (delInput.value) delInput.value.focus(); }); }
 function closeDelete() { delOpen.value = false; nextTick(() => { const b = document.querySelector('[data-a="delstart"]'); if (b) b.focus(); }); }
+/* after deleting the account (the reload that follows sign-out), the page says goodbye first */
+const byeHead = ref(null);
+onMounted(() => { if (acct.farewell && byeHead.value) byeHead.value.focus({ preventScroll: true }); });
+function leaveFarewell(k) { acct.farewell = false; acct.tab = k; mountSignIn(); }
 async function doDelete() {
   if (delBusy.value) return;
   if (delText.value.trim().toUpperCase() !== "DELETE") { delErr.value = "Type DELETE in capital letters to confirm."; if (delInput.value) delInput.value.focus(); return; }
@@ -117,6 +121,15 @@ function signup() {
       </div>
     </section>
   </template>
+  <section v-else-if="acct.farewell" class="farewell" aria-labelledby="byeh">
+    <div class="byeart"><AuthArt mode="bye" /></div>
+    <div class="byetext">
+      <h1 id="byeh" tabindex="-1" ref="byeHead">We are sad to see you go</h1>
+      <p class="lede">Your account has been deleted, along with your progress, points and badges.</p>
+      <p class="meta">Any questions and answers you posted in Debug Desk stay, shown as written by “Deleted member”. You can keep learning without an account, and you are welcome back any time.</p>
+      <div class="row"><RouterLink class="btn" to="/">Back to the courses</RouterLink><button class="btn quiet" data-a="atab" @click="leaveFarewell('up')">Create a new account</button></div>
+    </div>
+  </section>
   <template v-else>
     <h1>Your account</h1><p class="lede" style="margin-top:.8rem">An account keeps your progress and lets you pick it up on any device. The course is free, and it works without an account too.</p>
     <div v-if="!auth.onCatalyst" class="note" style="margin-top:1.4rem"><b>This is a preview, so accounts are switched off here.</b> The forms are shown so you can see how they look. They start working once the site is hosted on Zoho Catalyst. Until then, your progress is saved in this browser.</div>
