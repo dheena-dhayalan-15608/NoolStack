@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 420" role="img" aria-label="">
+<!-- NoolStack's robot setting a password: it types at a laptop while a password fills in, and the
+     padlock on the shield clicks shut. Used by forgotpwd.css on Catalyst's "Create password" page.
+     Transparent background, so it sits on the page's light or dark panel. -->
+<style>
+  .bob{animation:bob 3.4s ease-in-out infinite}
+  .bob2{animation:bob 3.4s ease-in-out -1.7s infinite}
+  .tapL{animation:tap .5s ease-in-out infinite}
+  .tapR{animation:tap .5s ease-in-out -.25s infinite}
+  .dot{opacity:0;animation:type 4s steps(1) infinite}
+  .d2{animation-delay:.35s}.d3{animation-delay:.7s}.d4{animation-delay:1.05s}.d5{animation-delay:1.4s}.d6{animation-delay:1.75s}
+  .caret{animation:caret .8s steps(1) infinite}
+  .shackle{animation:shut 4s ease-in-out infinite}
+  .lockglow{opacity:0;animation:glow 4s ease-out infinite}
+  .blink{animation:blink 4.5s infinite;transform-box:fill-box;transform-origin:center}
+  .leaf{transform-box:fill-box;transform-origin:50% 100%;animation:sway 3s ease-in-out infinite}
+  .leaf2{animation-delay:-1.5s}
+  .arrow{animation:up 2s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  @keyframes tap{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+  @keyframes type{0%{opacity:0}1%{opacity:1}88%{opacity:1}89%{opacity:0}}
+  @keyframes caret{0%{opacity:1}50%{opacity:0}}
+  @keyframes shut{0%,40%{transform:translateY(-9px)}52%{transform:translateY(1px)}56%,88%{transform:translateY(0)}100%{transform:translateY(-9px)}}
+  @keyframes glow{0%,50%{opacity:0;transform:scale(.7)}58%{opacity:.9}80%,100%{opacity:0;transform:scale(1.25)}}
+  @keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+  @keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(5deg)}}
+  @keyframes up{0%,100%{transform:translateY(2px)}50%{transform:translateY(-3px)}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}.dot{opacity:1}.lockglow{opacity:0}}
+</style>
+
+<!-- desk -->
+<rect x="24" y="366" width="472" height="9" rx="4.5" fill="#F2B13C" opacity=".7"/>
+
+<!-- cloud with an upload arrow -->
+<g class="bob2">
+  <path d="M62 92h66a20 20 0 0 0 0-40 28 28 0 0 0-53-6 22 22 0 0 0-13 46z" fill="#FBFAF6" stroke="#1C2230" stroke-width="4" stroke-linejoin="round"/>
+  <g class="arrow"><path d="M96 82V60M86 69l10-10 10 10" fill="none" stroke="#F2B13C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+
+<!-- shield with a padlock that clicks shut -->
+<g class="bob">
+  <path d="M106 128l50 17v38c0 33-22 56-50 68-28-12-50-35-50-68v-38z" fill="#FBFAF6" stroke="#1C2230" stroke-width="5" stroke-linejoin="round"/>
+  <circle class="lockglow" cx="106" cy="196" r="34" fill="#F2B13C" style="transform-box:fill-box;transform-origin:center"/>
+  <path class="shackle" d="M94 190v-12a12 12 0 0 1 24 0v12" fill="none" stroke="#1C2230" stroke-width="5.5" stroke-linecap="round"/>
+  <rect x="86" y="188" width="40" height="32" rx="7" fill="#F2B13C" stroke="#1C2230" stroke-width="4.5"/>
+  <path d="M106 199v9" stroke="#1C2230" stroke-width="5" stroke-linecap="round"/>
+</g>
+
+<!-- password bubble: the dots type in, one by one -->
+<g class="bob2">
+  <path d="M300 34h150a16 16 0 0 1 16 16v52a16 16 0 0 1-16 16H346l-18 16 3-16h-31a16 16 0 0 1-16-16V50a16 16 0 0 1 16-16z" fill="#FBFAF6" stroke="#1C2230" stroke-width="4" stroke-linejoin="round"/>
+  <circle cx="436" cy="76" r="17" fill="#F2B13C" stroke="#1C2230" stroke-width="3.5"/>
+  <circle cx="436" cy="71" r="5.5" fill="#1C2230"/><path d="M426 86a10 8 0 0 1 20 0" fill="#1C2230"/>
+  <rect x="298" y="52" width="114" height="20" rx="10" fill="#1C2230" opacity=".08"/>
+  <g fill="#1C2230">
+    <circle class="dot" cx="312" cy="62" r="4.5"/><circle class="dot d2" cx="328" cy="62" r="4.5"/><circle class="dot d3" cx="344" cy="62" r="4.5"/>
+    <circle class="dot d4" cx="360" cy="62" r="4.5"/><circle class="dot d5" cx="376" cy="62" r="4.5"/><circle class="dot d6" cx="392" cy="62" r="4.5"/>
+  </g>
+  <rect x="298" y="82" width="114" height="20" rx="10" fill="#1C2230" opacity=".08"/>
+  <rect class="caret" x="306" y="86" width="3" height="12" rx="1.5" fill="#F2B13C"/>
+</g>
+
+<!-- envelope -->
+<g class="bob" style="animation-delay:-.8s">
+  <rect x="436" y="168" width="54" height="38" rx="6" fill="#F2B13C" stroke="#1C2230" stroke-width="4"/>
+  <path d="M438 172l25 19 25-19" fill="none" stroke="#1C2230" stroke-width="4" stroke-linejoin="round"/>
+</g>
+
+<!-- books -->
+<rect x="52" y="340" width="96" height="14" rx="4" fill="#FF7B6B" stroke="#1C2230" stroke-width="3.5"/>
+<rect x="60" y="324" width="84" height="16" rx="4" fill="#FBFAF6" stroke="#1C2230" stroke-width="3.5"/>
+<rect x="56" y="354" width="104" height="12" rx="4" fill="#F2B13C" stroke="#1C2230" stroke-width="3.5"/>
+
+<!-- plant -->
+<path class="leaf" d="M452 318c-14-10-18-28-10-40 12 6 16 24 10 40z" fill="#7FD6A8" stroke="#1C2230" stroke-width="3.5" stroke-linejoin="round"/>
+<path class="leaf leaf2" d="M458 318c6-16 22-24 34-18-4 14-20 22-34 18z" fill="#7FD6A8" stroke="#1C2230" stroke-width="3.5" stroke-linejoin="round"/>
+<path d="M438 320h40l-6 46h-28z" fill="#FF7B6B" stroke="#1C2230" stroke-width="4" stroke-linejoin="round"/>
+
+<!-- the robot, looking down at its laptop -->
+<g transform="translate(176 92) scale(.72)">
+  <path d="M150 40V16" stroke="#FBFAF6" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="150" cy="12" r="11" fill="#F2B13C" stroke="#1C2230" stroke-width="6"/>
+  <rect x="60" y="40" width="180" height="140" rx="30" fill="#FBFAF6" stroke="#1C2230" stroke-width="7"/>
+  <rect x="82" y="62" width="136" height="96" rx="18" fill="#1C2230"/>
+  <g class="blink"><ellipse cx="124" cy="116" rx="9" ry="10" fill="#F2B13C"/><ellipse cx="176" cy="116" rx="9" ry="10" fill="#F2B13C"/></g>
+  <path d="M136 138q14 10 28 0" stroke="#F2B13C" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <rect x="133" y="180" width="34" height="16" fill="#1C2230"/>
+  <rect x="78" y="196" width="144" height="128" rx="26" fill="#FBFAF6" stroke="#1C2230" stroke-width="7"/>
+</g>
+<!-- arms reaching to the keyboard, behind the screen (tapping) -->
+<g class="tapL"><path d="M240 250c-14 10-12 30 6 40" fill="none" stroke="#1C2230" stroke-width="17" stroke-linecap="round"/>
+<path d="M240 250c-14 10-12 30 6 40" fill="none" stroke="#FBFAF6" stroke-width="8" stroke-linecap="round"/></g>
+<g class="tapR"><path d="M352 250c14 10 12 30-6 40" fill="none" stroke="#1C2230" stroke-width="17" stroke-linecap="round"/>
+<path d="M352 250c14 10 12 30-6 40" fill="none" stroke="#FBFAF6" stroke-width="8" stroke-linecap="round"/></g>
+
+<!-- laptop, seen from behind its screen -->
+<path d="M222 362l18-92h112l18 92z" fill="#FBFAF6" stroke="#1C2230" stroke-width="5" stroke-linejoin="round"/>
+<path d="M282 304l-10 10 10 10M310 304l10 10-10 10M302 300l-12 28" fill="none" stroke="#F2B13C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="200" y="360" width="192" height="10" rx="5" fill="#1C2230"/>
+</svg>

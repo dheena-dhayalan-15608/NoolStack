@@ -2,6 +2,8 @@
 /* NoolStack's mascot, a friendly computer, for the Account page.
    "in"  (sign in): it peeks round the edge of the card, shading its eyes, looking for you.
    "up"  (create an account): it waves from inside a circle.
+   "forgot" (the sign-in box's forgot-password steps): a padlock bobbing on a tile (public/css/forgot-lock.svg,
+         the same picture Catalyst's own forgot-password page shows).
    "bye" (after deleting an account): a sad wave goodbye, with a tear and a drooping antenna.
    Drawn in the same cream-and-ink style as the badges. Decorative only (aria-hidden). */
 defineProps({ mode: { type: String, default: "in" } });
@@ -36,6 +38,7 @@ defineProps({ mode: { type: String, default: "in" } });
       <!-- the card edge it peeks round -->
       <rect x="0" y="0" width="16" height="440" rx="8" class="edge"/>
     </svg>
+    <img v-else-if="mode === 'forgot'" key="forgot" class="authsvg lockimg" src="css/forgot-lock.svg" alt="">
     <svg v-else-if="mode === 'bye'" key="bye" class="authsvg bye" viewBox="0 0 360 440" aria-hidden="true" focusable="false">
       <circle cx="190" cy="250" r="150" class="halo"/>
       <path d="M68 326a150 150 0 0 0 268-26" class="ring" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="2 22"/>
@@ -98,6 +101,7 @@ defineProps({ mode: { type: String, default: "in" } });
 
 <style scoped>
 .authsvg{display:block;width:100%;height:100%;max-height:30rem;overflow:visible}
+.lockimg{object-fit:contain;max-width:20rem;margin:0 auto}
 .edge{fill:var(--accent)}
 .halo{fill:var(--accent-soft)}
 .ring{stroke:var(--accent)}

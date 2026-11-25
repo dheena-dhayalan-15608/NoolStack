@@ -62,33 +62,100 @@ html,body{background:var(--ns-surface)!important;color:var(--ns-ink);font-family
 /* "Create password" page, opened from the sign-up email (Catalyst's pconfirm page). It uses this
    stylesheet in place of Zoho's own, so the page's states are laid out here too: the form
    (.confirm_head), "Account Confirmed" (.success_container, shown by the page's script once the
-   password is set) and the expired-link and already-confirmed messages. */
+   password is set) and the expired-link and already-confirmed messages.
+   Layout: an animated scene on the left (setpwd-scene.svg: NoolStack's robot setting a password),
+   the card on the right; on phones the scene is a banner above the card. */
 html:has(.confirmaccount_container,.confirm_head),html:has(.confirmaccount_container,.confirm_head) body{margin:0;min-height:100%;background:var(--ns-bg)!important}
+html:has(.confirmaccount_container,.confirm_head) body{padding-left:50vw}
+html:has(.confirmaccount_container,.confirm_head) body::before{content:"";position:fixed;inset:0 auto 0 0;width:50vw;
+  background:url("setpwd-scene.svg") center 46%/min(82%,560px) auto no-repeat,radial-gradient(circle at 50% 46%,var(--ns-ring),transparent 62%),var(--ns-surface);
+  border-right:1px solid var(--ns-line);animation:nsSceneIn .8s cubic-bezier(.2,.8,.2,1) both}
 .confirmaccount_container *,.confirm_head,.confirm_head *{box-sizing:border-box}
 .confirmaccount_container a,.confirm_head a,.success_container a{color:var(--ns-accent);text-decoration:none}
 .confirmaccount_container a:hover,.confirm_head a:hover,.success_container a:hover{text-decoration:underline}
-.confirm_head,.urlexpired_container,.alreadyaccepted_container,.account_verified_container{display:block;width:460px;max-width:calc(100% - 32px);margin:64px auto 32px;padding:32px 36px;background:var(--ns-surface);border:1px solid var(--ns-line);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
-.confirmtitle,.urlexpired_title,.accepted_title{display:block;margin:0 0 10px;font:700 24px/1.25 var(--ns-display);color:var(--ns-ink)}
+.confirm_head,.urlexpired_container,.alreadyaccepted_container,.account_verified_container{display:block;width:460px;max-width:calc(100% - 32px);margin:12vh auto 32px;padding:32px 36px;background:var(--ns-surface);border:1px solid var(--ns-line);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+/* the card's parts rise in one after another */
+.confirm_head>*,.urlexpired_container>*,.alreadyaccepted_container>*{animation:nsRise .55s cubic-bezier(.2,.8,.2,1) both}
+.confirm_head>:nth-child(2),.urlexpired_container>:nth-child(2){animation-delay:.08s}
+.confirm_head>:nth-child(3),.urlexpired_container>:nth-child(3){animation-delay:.16s}
+.confirm_head>:nth-child(4){animation-delay:.24s}.confirm_head>:nth-child(5){animation-delay:.32s}
+.confirm_head>:nth-child(6){animation-delay:.4s}.confirm_head>:nth-child(n+7){animation-delay:.48s}
+.confirmtitle,.urlexpired_title,.accepted_title{display:block;margin:0 0 10px;font:700 26px/1.25 var(--ns-display);color:var(--ns-ink)}
 .confirmdesc,.urlexpired_desc,.accepted_desc{display:block;margin:0 0 22px;font-size:16px;line-height:1.55;color:var(--ns-muted)}
 .urlexpired_title,.accepted_title,.urlexpired_desc,.accepted_desc{text-align:center}
 .hellouser{display:inline-flex;max-width:100%;margin:0 0 22px;border:1px solid var(--ns-line);border-radius:999px;background:var(--ns-bg)}
 .username{display:inline-block;padding:8px 14px;font-size:15px;line-height:20px;color:var(--ns-ink);word-break:break-all}
 #password_container,#cpassword_container{position:relative;margin-bottom:18px}
-.confirm_head .textbox{display:block;width:100%;padding-right:48px;outline:none}
+#password_container{z-index:5}
+.confirm_head .textbox{display:block;width:100%;padding-right:48px;outline:none;transition:border-color .2s,box-shadow .2s}
 .show_hide_password{position:absolute;top:9px;right:12px;font-size:28px;color:var(--ns-muted);background:transparent;cursor:pointer}
 .fielderror{display:none;margin-top:8px;font-size:14px}
-.passwordpolicy{display:none;position:absolute;z-index:2;padding:10px 14px;background:var(--ns-surface);color:var(--ns-ink);border:1px solid var(--ns-line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
-.passwordpolicy ul{list-style:none;margin:6px 0 0;padding:0}
-.passwordpolicy li{line-height:28px;font-size:14px}
-.ppheader{font-weight:700;font-size:14px}
-.confirm_head .btn{display:block;width:100%;margin:6px 0 0;border:0;cursor:pointer}
+
+/* the password rules that appear while typing (Zoho's script places the box; it is white by default) */
+.hover-tool-tip,.passwordpolicy{background:var(--ns-surface)!important;color:var(--ns-ink)!important;border:1px solid var(--ns-line);border-radius:12px!important;box-shadow:0 12px 30px rgba(0,0,0,.22)!important;padding:16px 18px!important}
+.hover-tool-tip::after{border-color:var(--ns-surface) transparent transparent var(--ns-surface)!important}
+.hover-tool-tip p,.ppheader{margin:0 0 8px;font-weight:700;font-size:14px;color:var(--ns-ink)!important}
+.hover-tool-tip ul,.passwordpolicy ul{list-style:none;margin:0;padding:0}
+.hover-tool-tip ul li,.passwordpolicy li{display:flex;align-items:center;gap:10px;font-size:14px;line-height:28px;color:var(--ns-muted)!important;white-space:normal}
+.hover-tool-tip ul li::before{content:"";flex:none;width:9px;height:9px;margin:0;border-radius:50%;background-color:var(--ns-bad);transition:background-color .2s,transform .2s}
+.hover-tool-tip ul li.success{color:var(--ns-ink)!important}
+.hover-tool-tip ul li.success::before{background-color:#2FB67C;transform:scale(1.2)}
+.passwordpolicy{display:none;position:absolute;z-index:2}
+
+/* Confirm: lifts on hover, presses in, and a progress sweep runs across it once it is clicked */
+.confirm_head .btn{position:relative;overflow:hidden;display:block;width:100%;margin:6px 0 0;border:0;cursor:pointer;transition:transform .15s ease,box-shadow .2s ease,filter .2s}
+.confirm_head .btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px var(--ns-ring)}
+.confirm_head .btn:active{transform:scale(.97);box-shadow:none}
+.confirm_head .btn::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.55) 50%,transparent 80%);transform:translateX(-120%);pointer-events:none}
+.confirm_head .btn:focus:not(:focus-visible)::after,.confirm_head .btn:active::after{animation:nsSweep 1s ease-in-out 2}
+.confirm_head .btn:disabled,.confirm_head .btn[disabled]{cursor:progress;filter:saturate(.7)}
+.confirm_head .btn:disabled::after,.confirm_head .btn[disabled]::after{animation:nsSweep 1s ease-in-out infinite}
+
+/* "Account Confirmed": the card pops in and the tick draws itself */
 .success_container{display:none}
+.account_verified_container,.alreadyaccepted_container{animation:nsPop .6s cubic-bezier(.2,1.4,.4,1) both}
 .text16{display:block;margin:0 0 8px;text-align:center;font-size:16px;font-weight:700;color:var(--ns-accent);text-decoration:none}
 /* a tick or a cross in NoolStack's colours, in place of Zoho's pictures */
 .successicon,.expireicon{position:relative;width:76px;height:76px;margin:0 auto 18px;border-radius:50%;background:var(--ns-ring)}
-.successicon:after{content:"";position:absolute;left:28px;top:16px;width:16px;height:32px;border:solid var(--ns-accent);border-width:0 6px 6px 0;transform:rotate(45deg)}
+.successicon{animation:nsPop .6s .15s cubic-bezier(.2,1.4,.4,1) both}
+.successicon:after{content:"";position:absolute;left:28px;top:16px;width:16px;height:32px;border:solid var(--ns-accent);border-width:0 6px 6px 0;transform:rotate(45deg);animation:nsTick .45s .5s ease-out both}
+.successicon:before{content:"";position:absolute;inset:-8px;border-radius:50%;border:3px solid var(--ns-accent);opacity:0;animation:nsRing 1s .45s ease-out both}
 .expireicon:before,.expireicon:after{content:"";position:absolute;left:35px;top:18px;width:6px;height:40px;border-radius:3px;background:var(--ns-bad);transform:rotate(45deg)}
 .expireicon:after{transform:rotate(-45deg)}
-@media only screen and (max-width:600px){
-  .confirm_head,.urlexpired_container,.alreadyaccepted_container,.account_verified_container{margin:16px auto;padding:24px 20px;box-shadow:none}
+
+@keyframes nsRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes nsSceneIn{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+@keyframes nsSweep{from{transform:translateX(-120%)}to{transform:translateX(120%)}}
+@keyframes nsPop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+@keyframes nsTick{from{opacity:0;transform:rotate(45deg) scale(.2)}to{opacity:1;transform:rotate(45deg) scale(1)}}
+@keyframes nsRing{0%{opacity:.8;transform:scale(.8)}100%{opacity:0;transform:scale(1.35)}}
+@keyframes nsBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+@media only screen and (max-width:800px){
+  html:has(.confirmaccount_container,.confirm_head) body{padding-left:0}
+  html:has(.confirmaccount_container,.confirm_head) body::before{position:relative;display:block;inset:auto;width:auto;height:230px;background-size:auto 92%,auto,auto;border-right:0;border-bottom:1px solid var(--ns-line)}
+  .confirm_head,.urlexpired_container,.alreadyaccepted_container,.account_verified_container{margin:20px auto;padding:24px 20px;box-shadow:none}
+}
+
+/* Forgot password. Inside NoolStack's sign-in box the padlock is on the Account page's left panel
+   (the box has data-theme set on its <html>); opened on its own from an email, the page gets the
+   same split layout as above, with a bobbing padlock (forgot-lock.svg). Either way the steps rise in. */
+.recovery_box>*{animation:nsRise .5s cubic-bezier(.2,.8,.2,1) both}
+.recovery_box>:nth-child(2){animation-delay:.07s}.recovery_box>:nth-child(3){animation-delay:.14s}
+.recovery_box>:nth-child(4){animation-delay:.21s}.recovery_box>:nth-child(n+5){animation-delay:.28s}
+.recovery_box .btn{transition:transform .15s ease,box-shadow .2s ease}
+.recovery_box .btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px var(--ns-ring)}
+.recovery_box .btn:active{transform:scale(.97);box-shadow:none}
+html:not([data-theme]):has(.recovery_container) body{padding-left:42vw}
+html:not([data-theme]):has(.recovery_container) body::before{content:"";position:fixed;inset:0 auto 0 0;width:42vw;
+  background:url("forgot-lock.svg") center/min(60%,300px) auto no-repeat,radial-gradient(circle at 50% 50%,var(--ns-ring),transparent 60%),var(--ns-accent);
+  animation:nsSceneIn .8s cubic-bezier(.2,.8,.2,1) both}
+html:not([data-theme]):has(.recovery_container) .recovery_container{margin-top:12vh}
+@media only screen and (max-width:800px){
+  html:not([data-theme]):has(.recovery_container) body{padding-left:0}
+  html:not([data-theme]):has(.recovery_container) body::before{position:relative;display:block;inset:auto;width:auto;height:180px;background-size:auto 90%,auto,auto}
+  html:not([data-theme]):has(.recovery_container) .recovery_container{margin-top:8px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
 }

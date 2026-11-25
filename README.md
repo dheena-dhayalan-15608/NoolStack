@@ -121,6 +121,8 @@ The sign-in box (Catalyst Embedded Authentication) uses NoolStack's colours and 
 | `forgot_password_id` | the same box as the sign-in (`login`) |
 | `forgot_password_css_url` | `css/forgotpwd.css` |
 
+`forgotpwd.css` also styles Catalyst's "Create password" page (the link in the sign-up email): an animated scene of NoolStack's robot setting a password (`css/setpwd-scene.svg`) beside the card, the password rules, the Confirm button's animation and "Account Confirmed". Opened on its own from an email, the forgot-password page shows a bobbing padlock (`css/forgot-lock.svg`); inside the sign-in box, the Account page's left panel shows that padlock instead.
+
 The paths are worked out from where the site is hosted, so they work under `/app/` too. The two files are in `web/public/css/`.
 
 Catalyst asks that its own stylesheet comes first, with custom styles after it. Each file starts by importing Catalyst's stylesheet from `api.catalyst.zoho.com` and then adds NoolStack's look. If the sign-in box ever shows unstyled or broken, replace the `@import` line with the full contents of Catalyst's file (download it from the "Styling Embedded Authentication" page in the Catalyst docs), keeping NoolStack's styles after it. The box follows the browser's light or dark setting.

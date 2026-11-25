@@ -27,6 +27,12 @@ function themeFrame(f) {
   try { const d = f && f.contentDocument; if (d && d.documentElement) d.documentElement.setAttribute("data-theme", settings.shownTheme); } catch (e) { /* not reachable */ }
 }
 watch(() => settings.shownTheme, () => themeFrame(document.querySelector("#login iframe")));
+/* while the box shows its "Forgot password" steps, the left panel shows a padlock instead of the mascot */
+const frameForgot = ref(false);
+function isForgotPage(f) {
+  try { const d = f.contentDocument; return !!(d && d.querySelector(".recovery_container,.recovery_box")); } catch (e) { return false; }
+}
+const artMode = computed(() => (acct.tab === "in" && frameForgot.value ? "forgot" : acct.tab));
 function hookFrame(f) {
   if (f.__nsHooked) return;
   f.__nsHooked = true;
@@ -35,6 +41,7 @@ function hookFrame(f) {
   f.addEventListener("load", () => {
     try { f.contentWindow.addEventListener("pagehide", () => { loginLoading.value = true; clearTimeout(revealTimer); revealTimer = setTimeout(showWhenLoaded, 10000); }); } catch (e) { /* not reachable */ }
     themeFrame(f);
+    frameForgot.value = isForgotPage(f);
     showWhenLoaded();
   });
 }
@@ -136,9 +143,10 @@ function signup() {
     <div class="tabs" role="tablist"><button :class="['tab', { on: acct.tab === 'in' }]" role="tab" :aria-selected="String(acct.tab === 'in')" data-a="atab" @click="tab('in')">Sign in</button><button :class="['tab', { on: acct.tab === 'up' }]" role="tab" :aria-selected="String(acct.tab === 'up')" data-a="atab" @click="tab('up')">Create an account</button></div>
     <div :class="['authcard', 'is-' + acct.tab]">
       <div class="authart">
-        <AuthArt :mode="acct.tab" />
+        <AuthArt :mode="artMode" />
         <Transition name="hello" mode="out-in">
-          <div v-if="acct.tab === 'in'" key="in" class="authhello"><b>Welcome back!</b><span>Sign in to pick up where you left off.</span></div>
+          <div v-if="artMode === 'forgot'" key="forgot" class="authhello"><b>Forgot your password?</b><span>It happens. Follow the steps and you will have a new one in a minute.</span></div>
+          <div v-else-if="acct.tab === 'in'" key="in" class="authhello"><b>Welcome back!</b><span>Sign in to pick up where you left off.</span></div>
           <div v-else key="up" class="authhello"><b>Nice to meet you!</b><span>A free account keeps your progress on every device.</span></div>
         </Transition>
       </div>

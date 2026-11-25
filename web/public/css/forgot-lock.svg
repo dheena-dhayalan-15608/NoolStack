@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="">
+<!-- A padlock that bobs gently, for Catalyst's forgot-password pages (used by forgotpwd.css).
+     Transparent background, so it sits on the page's light or dark panel. -->
+<style>
+  .float{animation:float 3s ease-in-out infinite;transform-origin:120px 140px}
+  .shackle{animation:lift 3s ease-in-out infinite}
+  .keyhole{animation:pulse 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+  .tile{animation:tile 3s ease-in-out infinite;transform-origin:120px 130px}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+  @keyframes lift{0%,60%,100%{transform:translateY(0)}75%{transform:translateY(-8px)}}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+  @keyframes tile{0%,100%{transform:scale(1);opacity:.55}50%{transform:scale(1.05);opacity:.8}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<rect class="tile" x="40" y="50" width="160" height="160" rx="30" fill="#F2B13C" opacity=".55"/>
+<g class="float">
+  <path class="shackle" d="M86 120V92a34 34 0 0 1 68 0v28" fill="none" stroke="#1C2230" stroke-width="20" stroke-linecap="round"/>
+  <path class="shackle" d="M86 120V92a34 34 0 0 1 68 0v28" fill="none" stroke="#FBFAF6" stroke-width="9" stroke-linecap="round"/>
+  <rect x="62" y="112" width="116" height="90" rx="22" fill="#FBFAF6" stroke="#1C2230" stroke-width="7"/>
+  <rect x="76" y="124" width="20" height="64" rx="10" fill="#F2B13C" opacity=".45"/>
+  <g class="keyhole"><circle cx="120" cy="148" r="12" fill="#1C2230"/><path d="M114 154h12l4 22h-20z" fill="#1C2230"/></g>
+</g>
+</svg>
