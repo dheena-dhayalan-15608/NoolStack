@@ -9,10 +9,15 @@
   --ns-body:"Atkinson Hyperlegible",Verdana,system-ui,sans-serif;
   --ns-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
 }
+/* Theme: NoolStack's theme button sets data-theme on this page's <html> (see Account.vue); without it
+   (for example on the password pages opened from an email) the browser's light or dark setting is used. */
+:root{color-scheme:light}
 @media (prefers-color-scheme:dark){
-  :root{--ns-bg:#171A1F;--ns-surface:#111317;--ns-line:#2E333D;--ns-ink:#ECEEF2;--ns-muted:#8F97A6;
-    --ns-accent:#F2B13C;--ns-accent-ink:#17120A;--ns-ring:rgba(242,177,60,.28);--ns-bad:#FF7B6B;}
+  :root:not([data-theme="light"]){--ns-bg:#171A1F;--ns-surface:#111317;--ns-line:#2E333D;--ns-ink:#ECEEF2;--ns-muted:#8F97A6;
+    --ns-accent:#F2B13C;--ns-accent-ink:#17120A;--ns-ring:rgba(242,177,60,.28);--ns-bad:#FF7B6B;color-scheme:dark;}
 }
+:root[data-theme="dark"]{--ns-bg:#171A1F;--ns-surface:#111317;--ns-line:#2E333D;--ns-ink:#ECEEF2;--ns-muted:#8F97A6;
+    --ns-accent:#F2B13C;--ns-accent-ink:#17120A;--ns-ring:rgba(242,177,60,.28);--ns-bad:#FF7B6B;color-scheme:dark;}
 
 html,body{background:var(--ns-surface)!important;color:var(--ns-ink);font-family:var(--ns-body)}
 .bg_one{display:none!important}

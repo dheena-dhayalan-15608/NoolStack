@@ -3,11 +3,13 @@
    the forms are shown switched off, as a preview. */
 import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch } from "vue";
 import { useAuth } from "../stores/auth.js";
+import { useSettings } from "../stores/settings.js";
 import { party } from "../services/feedback.js";
 import DoneMsg from "../components/DoneMsg.vue";
 import { acct } from "../components/acctState.js";
 
 const auth = useAuth();
+const settings = useSettings();
 const name = computed(() => { const u = auth.user; return u ? (((u.first_name || "") + " " + (u.last_name || "")).trim() || "a learner") : ""; });
 const f = ref({ suF: "", suL: "", suE: "" }), errs = ref({ suF: "", suL: "", suE: "", suC: "" }), agreed = ref(false);
 const note = ref({ show: false, cls: "fb", text: "" }), busy = ref(false), tried = ref(false);
@@ -19,6 +21,11 @@ const FIELDS = [["suF", "First name", "text", "given-name", ""], ["suL", "Last n
 const loginLoading = ref(true);
 let loginWatch = null, revealTimer = null;
 function showWhenLoaded() { clearTimeout(revealTimer); requestAnimationFrame(() => { loginLoading.value = false; }); }
+/* the box follows NoolStack's theme (the theme button), not only the browser's setting */
+function themeFrame(f) {
+  try { const d = f && f.contentDocument; if (d && d.documentElement) d.documentElement.setAttribute("data-theme", settings.shownTheme); } catch (e) { /* not reachable */ }
+}
+watch(() => settings.shownTheme, () => themeFrame(document.querySelector("#login iframe")));
 function hookFrame(f) {
   if (f.__nsHooked) return;
   f.__nsHooked = true;
@@ -26,6 +33,7 @@ function hookFrame(f) {
   revealTimer = setTimeout(showWhenLoaded, 10000);
   f.addEventListener("load", () => {
     try { f.contentWindow.addEventListener("pagehide", () => { loginLoading.value = true; clearTimeout(revealTimer); revealTimer = setTimeout(showWhenLoaded, 10000); }); } catch (e) { /* not reachable */ }
+    themeFrame(f);
     showWhenLoaded();
   });
 }
@@ -98,7 +106,7 @@ function signup() {
     <h1>Your account</h1><p class="lede" style="margin-top:.8rem">An account keeps your progress and lets you pick it up on any device. The course is free, and it works without an account too.</p>
     <div v-if="!auth.onCatalyst" class="note" style="margin-top:1.4rem"><b>This is a preview, so accounts are switched off here.</b> The forms are shown so you can see how they look. They start working once the site is hosted on Zoho Catalyst. Until then, your progress is saved in this browser.</div>
     <div class="tabs" role="tablist"><button :class="['tab', { on: acct.tab === 'in' }]" role="tab" :aria-selected="String(acct.tab === 'in')" data-a="atab" @click="tab('in')">Sign in</button><button :class="['tab', { on: acct.tab === 'up' }]" role="tab" :aria-selected="String(acct.tab === 'up')" data-a="atab" @click="tab('up')">Create an account</button></div>
-    <div v-if="acct.tab === 'in' && auth.onCatalyst" class="panel formbox"><div :class="['loginwrap', { loading: loginLoading }]"><p v-if="loginLoading" class="meta loginwait" role="status">Loading the sign-in box…</p><div id="login" style="min-height:26rem"></div></div></div>
+    <div v-if="acct.tab === 'in' && auth.onCatalyst" class="panel formbox"><div :class="['loginwrap', { loading: loginLoading }]"><div v-if="loginLoading" class="loginwait" role="status"><span class="spinner" aria-hidden="true"></span><span class="meta">Loading the sign-in box…</span></div><div id="login" style="min-height:26rem"></div></div></div>
     <div v-else-if="acct.tab === 'in'" class="panel formbox"><p class="meta">On the live site, Zoho’s secure sign-in box appears here. You can sign in with an email address and password, or with a Zoho or Google account. It also has a link for a forgotten password.</p>
       <div class="field"><label for="pvE">Email address</label><input type="email" id="pvE" disabled></div><div class="field"><label for="pvP">Password</label><input type="password" id="pvP" disabled></div><button class="btn" disabled>Sign in</button></div>
     <div v-else-if="acct.signupDone" class="panel formbox"><DoneMsg text="Check your email." fresh /><p>We sent a message to <b>{{ acct.signupDone }}</b> with a link to set your password. Open it, then come back here and sign in.</p><button class="btn quiet" data-a="atab" @click="tab('in')">Go to sign in</button></div>
