@@ -8,6 +8,7 @@ import { party } from "../services/feedback.js";
 import DoneMsg from "../components/DoneMsg.vue";
 import AuthArt from "../components/AuthArt.vue";
 import { acct } from "../components/acctState.js";
+import { LEGAL } from "../data/content.js";
 
 const auth = useAuth();
 const settings = useSettings();
@@ -32,6 +33,25 @@ const frameForgot = ref(false);
 function isForgotPage(f) {
   try { const d = f.contentDocument; return !!(d && d.querySelector(".recovery_container,.recovery_box")); } catch (e) { return false; }
 }
+/* "Contact administrator" (a forgot-password step): Zoho masks the administrator's address
+   (no****ck@zoho****.i*). It is NoolStack's public contact address, shown in the footer anyway, so the
+   box shows it in full, as an email link. The box is on NoolStack's own address, so this page can reach it. */
+function showAdminEmail(f) {
+  let d;
+  try { d = f.contentDocument; } catch (e) { return; }
+  if (!d || !d.body || !LEGAL.email) return;
+  const fix = () => {
+    const b = d.querySelector("#org_contact_support .head_info b:nth-of-type(2)");
+    if (!b || !b.textContent.includes("*")) return;
+    const a = d.createElement("a");
+    a.href = "mailto:" + LEGAL.email;
+    a.textContent = LEGAL.email;
+    a.style.fontWeight = "700";
+    b.replaceChildren(a);
+  };
+  fix();
+  new MutationObserver(fix).observe(d.body, { childList: true, subtree: true, characterData: true });
+}
 const artMode = computed(() => (acct.tab === "in" && frameForgot.value ? "forgot" : acct.tab));
 function hookFrame(f) {
   if (f.__nsHooked) return;
@@ -42,6 +62,7 @@ function hookFrame(f) {
     try { f.contentWindow.addEventListener("pagehide", () => { loginLoading.value = true; clearTimeout(revealTimer); revealTimer = setTimeout(showWhenLoaded, 10000); }); } catch (e) { /* not reachable */ }
     themeFrame(f);
     frameForgot.value = isForgotPage(f);
+    showAdminEmail(f);
     showWhenLoaded();
   });
 }
