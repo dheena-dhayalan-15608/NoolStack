@@ -45,7 +45,12 @@ html,body{background:var(--ns-surface)!important;color:var(--ns-ink);font-family
 .options:hover,.optionstry:hover,.backoption:hover{background:var(--ns-bg)}
 .img_option,.nopassword_icon{color:var(--ns-accent)}
 .line{background:var(--ns-line)}
-.nopassword_container{background:var(--ns-bg);border-color:var(--ns-line)}
+/* "You have not set a password": Catalyst places this box absolutely (over the form) and fixes its text at
+   #222222, which is unreadable in dark mode. Keep it in the normal flow, full width, in NoolStack's colours.
+   Its display is left alone: Catalyst shows and hides it. */
+.nopassword_container{position:static;bottom:auto;width:100%;max-width:none;margin:16px 0;padding:14px 16px;box-sizing:border-box;background:var(--ns-bg);border:1px solid var(--ns-line);border-radius:10px}
+.nopassword_message{color:var(--ns-ink);font-family:var(--ns-body);font-size:15px;line-height:1.5;vertical-align:middle}
+.nopassword_message a{color:var(--ns-accent)}
 
 /* messages that slide in at the top */
 .Alert,.Errormsg{background:var(--ns-ink);border-radius:10px}
@@ -55,4 +60,5 @@ html,body{background:var(--ns-surface)!important;color:var(--ns-ink);font-family
   .signin_box{padding:20px 4px 4px}
   .textbox,.textbox:focus{background:var(--ns-bg);border:1px solid var(--ns-line);border-radius:10px;text-indent:14px}
   .textbox:focus{border-color:var(--ns-accent)}
+  .nopassword_container{width:100%;padding:12px}
 }
