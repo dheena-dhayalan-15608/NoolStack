@@ -49,6 +49,14 @@ input.textbox{padding-left:14px!important;text-indent:0!important}
 .grey{background:transparent;color:var(--ns-ink);border:1px solid var(--ns-line)}
 .changeloadbtn:before{border-color:var(--ns-accent-ink);border-top-color:transparent}
 .bluetext_action,.bottom_option,.change_user,.fielderror a{color:var(--ns-accent)}
+/* Zoho pins these links ("Continue to reset password", "View all options", "Contact administrator") 40px
+   above the bottom of a box at least 500px tall. The box here fits its content, so they go in the
+   normal flow under the button instead of on top of it. */
+.fieldcontainer{margin-bottom:0}
+.bottom_line_opt{position:static;display:flex;justify-content:center;width:100%;margin-top:18px}
+.bottom_line_opt.hide{display:none}
+.bottom_option{font-size:15px;font-weight:700}
+.bottom_option:hover{text-decoration:underline}
 .optionstry:hover,.backoption:hover,.toggle_active{background:var(--ns-bg)}
 .img_option,.select_icon{color:var(--ns-accent)}
 
