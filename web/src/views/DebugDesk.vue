@@ -6,6 +6,7 @@ import { useDebugGate } from "../components/useDebugGate.js";
 import DebugGateView from "../components/DebugGateView.vue";
 import DbTags from "../components/DbTags.vue";
 import CrAvatar from "../components/CrAvatar.vue";
+import DbOnline from "../components/DbOnline.vue";
 
 const props = defineProps({ sort: { type: String, default: "newest" }, tag: { type: String, default: "" } });
 const gate = useDebugGate();
@@ -32,6 +33,7 @@ const preview = b => b.replace(/```[\s\S]*?```/g, " [code] ").slice(0, 160);
   <DebugGateView v-if="gate !== 'open'" :state="gate" />
   <div v-else class="dbwrap">
     <div class="dbhead"><div><h1>Debug Desk</h1><p class="meta">Stuck on an error? Ask the community. Help others by answering, and vote up the answers that work.</p></div><div class="row" style="margin:0"><RouterLink v-if="CR.admin" class="btn quiet" to="/debug-mod">Moderation</RouterLink><RouterLink class="btn" to="/debug-ask">Ask a question</RouterLink></div></div>
+    <DbOnline />
     <div v-if="CR.demo" class="note" style="margin:0 0 1rem"><b>Preview.</b> Questions and answers here are kept in your browser, with pretend members. On the live site, Debug Desk is shared by real members.</div>
     <div class="dbbar"><label class="sr-only" for="dbsearch">Search questions</label><input id="dbsearch" type="search" placeholder="Search questions, for example: TypeError" :value="CR.search" @keydown.enter.prevent="search($event.target.value)" @search="search($event.target.value)">
       <div class="dbsort" role="group" aria-label="Sort"><RouterLink v-for="[k, t, h] in SORTS" :key="k" :to="h" :class="sort === k && !tag ? 'on' : ''" active-class="" exact-active-class="">{{ t }}</RouterLink></div></div>
@@ -42,7 +44,7 @@ const preview = b => b.replace(/```[\s\S]*?```/g, " [code] ").slice(0, 160);
       <p v-else-if="!list" class="meta">Loading…</p>
       <template v-else-if="list.length">
         <p class="meta">{{ list.length }} {{ list.length === 1 ? "question" : "questions" }}</p>
-        <article v-for="x in list" :key="x.id" class="dbq"><div class="dbstats"><span><b>{{ x.score }}</b> {{ Math.abs(x.score) === 1 ? "vote" : "votes" }}</span><span :class="x.accepted ? 'acc' : x.answers ? 'has' : ''"><b>{{ x.answers }}</b> {{ x.answers === 1 ? "answer" : "answers" }}</span></div>
+        <article v-for="x in list" :key="x.id" class="dbq"><div class="dbstats"><span><b>{{ x.score }}</b> {{ Math.abs(x.score) === 1 ? "vote" : "votes" }}</span><span :class="x.accepted ? 'acc' : x.answers ? 'has' : ''"><b>{{ x.answers }}</b> {{ x.answers === 1 ? "answer" : "answers" }}</span><span v-if="x.files && x.files.length" class="dbclip" :title="x.files.length === 1 ? '1 attachment' : x.files.length + ' attachments'"><span aria-hidden="true">📎</span><b>{{ x.files.length }}</b><span class="sr-only">{{ x.files.length === 1 ? "attachment" : "attachments" }}</span></span></div>
           <div class="dbqb"><h3><RouterLink :to="'/debug-q-' + x.id">{{ x.title }}</RouterLink></h3><p class="meta">{{ preview(x.body) }}</p><div class="dbmeta"><DbTags :tags="x.tags" /><span class="meta"><CrAvatar :name="x.user.name" :uid="x.user.id" sz="sm" /> {{ x.user.name }} asked {{ crWhen(x.at) }}</span></div></div></article>
       </template>
       <p v-else class="meta crpad">No questions found. {{ CR.search || tag ? "Try another search, or ask it yourself." : "Be the first to ask." }}</p>

@@ -173,7 +173,7 @@ Data Store tables, with no direct access for app users (only the function reads 
 | Table | Columns |
 |---|---|
 | `Members` | `user_id` (unique), `name` |
-| `DebugQuestions` | `user_id`, `name`, `title`, `body` (Text), `tags`, `accepted_id`, `answer_count` (Int), `status` |
+| `DebugQuestions` | `user_id`, `name`, `title`, `body` (Text), `tags`, `accepted_id`, `answer_count` (Int), `status`, `files` (Text: the attachments, as JSON) |
 | `DebugAnswers` | `question_id`, `user_id`, `name`, `body` (Text), `status` |
 | `DebugVotes` | `item_kind` (`q` or `a`), `item_id`, `user_id`, `value` (Int, 1 or -1) |
 | `Reports` | `reporter_id`, `reporter_name`, `kind`, `item_id`, `reason`, `excerpt`, `status` |
@@ -183,6 +183,9 @@ The function's environment variables, set in the console under Serverless → Fu
 - `ADMIN_EMAILS`: the moderators' sign-in emails. They see a **Moderation** button on Debug Desk.
 - `ANTHROPIC_API_KEY`: a Claude API key for the check that every question and answer is about learning. Each post costs a small amount. Without a key, posting is paused with a message saying so. `MODERATION_MODEL` is the model used (default `claude-haiku-5-5`).
 - `DS_CHANNEL_ID`: the ID of a Data Streams channel, for live updates. The events only say that a question has new activity; the browser then fetches it through its signed-in session. Without it, Debug Desk still works; members refresh to see new activity.
+- `DEBUG_BUCKET`: the private Stratus bucket for Debug Desk attachments (default `debugdesk`). Members can attach up to 3 screenshots (PNG, JPEG, WebP or GIF, up to 2.5 MB; big ones are shrunk in the browser) or text files (up to 100 KB) to a question. The AI check sees them too. Files get random names and are only handed out by the function, to members, for published questions; removing a question in Moderation deletes its files.
+
+**Active now** on Debug Desk lists members with a Debug Desk page open in the last 3 minutes. Each open page says "I am here" once a minute while it is showing; the list is kept in Catalyst Cache (the default segment) and sent on the live channel when it changes. Members can switch off "Show me as active".
 
 Data Streams uses Zoho's `@zcatalyst/datastreams` browser client, bundled as `web/public/vendor/datastreams-ws.min.js` (Apache License 2.0).
 

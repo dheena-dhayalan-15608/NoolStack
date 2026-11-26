@@ -3,7 +3,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import { NODES, NODES1, CHECKS, PROJECTS } from "./data/content.js";
 import { NODE, course, useProgress } from "./stores/progress.js";
-import { CR, crRtClose } from "./services/debugdesk.js";
+import { CR, crRtClose, crPresenceStop } from "./services/debugdesk.js";
 import { acct } from "./components/acctState.js";
 
 import Home from "./views/Home.vue";
@@ -87,5 +87,5 @@ export function routeItem(route) {
 
 router.afterEach(to => {
   /* live Debug Desk updates only run while a Debug Desk page is open */
-  if (!to.path.startsWith("/debug")) { crRtClose(); CR.view = ""; }
+  if (!to.path.startsWith("/debug")) { crPresenceStop(); crRtClose(); CR.view = ""; }
 });

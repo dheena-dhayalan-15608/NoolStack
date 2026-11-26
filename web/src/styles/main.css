@@ -599,6 +599,40 @@ a.fsoc:hover{border-color:var(--accent)}
 .dbah{margin:1.6rem 0 .2rem;font-size:1.2rem}
 .dbanswer{margin-top:1.4rem}.dbanswer textarea,.dbwrap .field input,.dbwrap .field textarea{width:100%;font:inherit;color:var(--ink);background:var(--raised);border:1px solid var(--line);border-radius:10px;padding:.6rem .8rem}
 .dbwrap .field textarea,.dbanswer textarea{font-family:var(--mono);font-size:.92rem}
+/* asking: plain-text description, code language, attachments */
+.dbwrap .field textarea.prose{font-family:var(--body);font-size:1rem}
+.dbcodehead{display:flex;justify-content:space-between;align-items:center;gap:.6rem}
+.dbcodehead select{font:inherit;font-size:.9rem;color:var(--ink);background:var(--raised);border:1px solid var(--line);border-radius:8px;padding:.3rem .5rem}
+.dblabel{display:block;font-weight:700;margin-bottom:.35rem}
+.dbdrop{border:2px dashed var(--line);border-radius:12px;padding:1rem 1.1rem;background:var(--raised);transition:border-color .2s,background .2s}
+.dbdrop.on{border-color:var(--accent);background:var(--accent-soft)}
+.dbdrop p{margin:0}.dbdrop p+p{margin-top:.3rem}
+.dbfiles{list-style:none;margin:.7rem 0 0;padding:0;display:grid;gap:.5rem}
+.dbfiles li{display:flex;align-items:center;gap:.7rem;padding:.45rem .6rem;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.dbfiles img{width:3.2rem;height:2.4rem;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+.dbfileicon{display:inline-grid;place-items:center;flex:none;width:3.2rem;height:2.4rem;border-radius:6px;background:var(--accent-soft);color:var(--accent);font:700 .75rem var(--mono)}
+.dbfilename{flex:1;min-width:0;display:flex;flex-direction:column;overflow-wrap:anywhere}.dbfilename .meta{font-size:.8rem}
+/* a question's attachments */
+.dbatt{margin:0 0 .9rem}
+.dbshots{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:.6rem}
+.dbshot{padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--raised);cursor:zoom-in;width:min(16rem,100%)}
+.dbshot img{display:block;width:100%;height:10rem;object-fit:contain;background:var(--surface)}
+.dbtxtfile{margin:.5rem 0}.dbtxtfile figcaption{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.dbtxtfile .dbfileicon{width:2.4rem;height:1.6rem;font-size:.65rem}
+.dblight{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;padding:1rem;background:rgba(8,9,12,.82)}
+.dblight img{max-width:100%;max-height:85vh;border-radius:10px;background:#fff}
+/* "Active now" */
+.dbonline{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1rem;margin:0 0 1rem;padding:.7rem 1rem;border:1px solid var(--line);border-radius:12px;background:var(--raised)}
+.dbonline h2{display:flex;align-items:center;gap:.45rem;margin:0;font-size:1rem}
+.dbonline>p{margin:0}
+.dbdot{width:.6rem;height:.6rem;border-radius:50%;background:var(--good);box-shadow:0 0 0 0 var(--good);animation:dbpulse 2s ease-out infinite}
+@keyframes dbpulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--good) 60%,transparent)}100%{box-shadow:0 0 0 .5rem transparent}}
+.dbonlist{display:flex;flex-wrap:wrap;gap:.4rem;list-style:none;margin:0;padding:0;flex:1}
+.dbonlist li{display:inline-flex;align-items:center;gap:.35rem;padding:.15rem .55rem .15rem .2rem;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:.9rem}
+.dbonlist li.meta{border:0;background:none}
+.dbonme{display:inline-flex;align-items:center;gap:.4rem;margin-left:auto;font-size:.9rem;color:var(--muted);cursor:pointer}
+.dbclip{display:inline-flex;align-items:center;gap:.25rem}
+@media (prefers-reduced-motion:reduce){.dbdot{animation:none}}
 
 /* party poppers */
 .party{position:fixed;inset:0;pointer-events:none;z-index:30;overflow:hidden}
