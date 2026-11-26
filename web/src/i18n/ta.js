@@ -832,6 +832,7 @@ export const TA={
 "attachment": "இணைப்பு",
 "attachments": "இணைப்புகள்",
 "Please slow down.": "சற்று மெதுவாக.",
+"Debug Desk is resting for now: NoolStack has reached its monthly allowance on Zoho Catalyst. Please try again later.": "Debug Desk இப்போது ஓய்வில் உள்ளது: Zoho Catalyst இல் NoolStack இந்த மாதத்துக்கான அளவை எட்டிவிட்டது. பின்னர் மீண்டும் முயலுங்கள்.",
 "Link coming soon": "இணைப்பு விரைவில்",
 "Mail": "அஞ்சல்",
 "Chat": "அரட்டை",

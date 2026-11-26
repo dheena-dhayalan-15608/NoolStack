@@ -62,8 +62,17 @@ const route = fn => async (req, res) => {
     c.uid = digits(c.user.user_id); c.admin = admins().includes(String(c.user.email_id || "").toLowerCase());
     c.me = await member(c.db, c.uid);
     await fn(req, res, c);
-  } catch (e) { console.error(e); res.status(500).json({ error: "Something went wrong. Please try again." }); }
+  } catch (e) { console.error(e); { const [code, body] = failure(e); res.status(code).json(body); } }
 };
+/* When Catalyst refuses because the project has used its allowance (for example the free Data Store
+   reads for the month), say so, instead of a vague "something went wrong". */
+const LIMIT_RE = /limit|exceed|exhaust|quota|free.?tier|allowance|billing|payment/i;
+function failure(e) {
+  const text = [e && e.code, e && e.message, e && e.statusCode, e && JSON.stringify(e.data || e.response || "")].join(" ");
+  if (LIMIT_RE.test(text) || (e && (e.statusCode === 429 || e.status === 429)))
+    return [503, { error: "Debug Desk is resting for now: NoolStack has reached its monthly allowance on Zoho Catalyst. Please try again later." }];
+  return [500, { error: "Something went wrong. Please try again." }];
+}
 const memberOnly = fn => route(async (req, res, c) => {
   if (!c.me) return res.status(403).json({ error: "Join the community first." });
   await fn(req, res, c);
